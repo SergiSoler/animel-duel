@@ -5,338 +5,318 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>ANIMEL DUELS ⚔️</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Paytone+One&family=Nunito:wght@700;900&display=swap');
 
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;}
-body{font-family:'Fredoka One',cursive;width:100vw;height:100vh;overflow:hidden;position:relative;}
+body{font-family:'Press Start 2P',monospace;width:100vw;height:100vh;overflow:hidden;position:relative;background:#1a1a2e;}
 
-/* ══ BACKGROUND SYSTEM ══ */
-#sky{position:fixed;inset:0;z-index:0;transition:background 1.8s ease,filter 1.8s ease;}
-#ground{position:fixed;bottom:0;left:0;right:0;height:32%;z-index:1;transition:background 1.8s ease;}
-#grass{position:fixed;bottom:32%;left:0;right:0;height:8px;z-index:2;transition:background 1.8s ease;}
+/* ══ PIXEL FONT HELPER ══ */
+.px{font-family:'Press Start 2P',monospace;}
 
-/* ── Default (Jerusalem / Holy Land) ── */
-.sky-jerusalem{background:linear-gradient(180deg,#E8C97A 0%,#F0DFA0 40%,#D4A843 100%);}
-.gnd-jerusalem{background:linear-gradient(180deg,#C4943A 0%,#A0702A 60%,#7A5020 100%);}
-.grs-jerusalem{background:#B8860B;}
+/* ══ BACKGROUND ══ */
+#sky{position:fixed;inset:0;z-index:0;transition:background 1.8s ease;}
+#ground{position:fixed;bottom:0;left:0;right:0;height:28%;z-index:1;transition:background 1.8s ease;}
+#grass{position:fixed;bottom:28%;left:0;right:0;height:6px;z-index:2;transition:background 1.8s ease;image-rendering:pixelated;}
 
-/* ── Rome ── */
-.sky-rome{background:linear-gradient(180deg,#7FB3D3 0%,#A8CCE8 50%,#C8E0F0 100%);}
-.gnd-rome{background:linear-gradient(180deg,#8B7355 0%,#6B5335 60%,#4A3520 100%);}
-.grs-rome{background:#6B8E23;}
+/* Pixel scanline overlay for retro feel */
+#scanlines{position:fixed;inset:0;z-index:3;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.06) 2px,rgba(0,0,0,0.06) 4px);}
 
-/* ── Egypt ── */
-.sky-egypt{background:linear-gradient(180deg,#FF9500 0%,#FFCC44 30%,#FFE58A 100%);}
-.gnd-egypt{background:linear-gradient(180deg,#C8A84B 0%,#A88030 60%,#806018 100%);}
-.grs-egypt{background:#C8A84B;}
+.sky-day    {background:linear-gradient(180deg,#0f0c29 0%,#302b63 50%,#24243e 100%);}
+.sky-night  {background:linear-gradient(180deg,#000000 0%,#0d0d2b 50%,#1a1a3e 100%);}
+.sky-usa    {background:linear-gradient(180deg,#001f5b 0%,#002fa7 50%,#001f5b 100%);}
+.sky-uk     {background:linear-gradient(180deg,#012169 0%,#003580 50%,#012169 100%);}
+.sky-pop    {background:linear-gradient(180deg,#ff006e 0%,#8338ec 50%,#3a86ff 100%);}
+.sky-sport  {background:linear-gradient(180deg,#004400 0%,#006600 50%,#002200 100%);}
+.sky-film   {background:linear-gradient(180deg,#1a0000 0%,#3d0000 50%,#1a0000 100%);}
+.sky-chaos  {animation:rbSky 3s linear infinite;}
+@keyframes rbSky{0%{background:linear-gradient(180deg,#ff006e,#8338ec);}33%{background:linear-gradient(180deg,#3a86ff,#06ffa5);}66%{background:linear-gradient(180deg,#ffbe0b,#fb5607);}100%{background:linear-gradient(180deg,#ff006e,#8338ec);}}
 
-/* ── Mongolia / Steppe ── */
-.sky-mongolia{background:linear-gradient(180deg,#2E86AB 0%,#57A0C8 50%,#A8D4EA 100%);}
-.gnd-mongolia{background:linear-gradient(180deg,#8B7A3A 0%,#6B5A2A 60%,#4A3A18 100%);}
-.grs-mongolia{background:#7A8B3A;}
+.gnd-day    {background:repeating-linear-gradient(90deg,#1a1a2e 0px,#1a1a2e 8px,#16213e 8px,#16213e 16px);}
+.gnd-night  {background:#0a0a0a;}
+.gnd-usa    {background:repeating-linear-gradient(90deg,#8b0000 0px,#8b0000 6px,#660000 6px,#660000 12px);}
+.gnd-uk     {background:repeating-linear-gradient(90deg,#012169 0px,#012169 6px,#001050 6px,#001050 12px);}
+.gnd-pop    {background:repeating-linear-gradient(90deg,#1a001a 0px,#1a001a 6px,#2d002d 6px,#2d002d 12px);}
+.gnd-sport  {background:repeating-linear-gradient(90deg,#0d2d0d 0px,#0d2d0d 6px,#002200 6px,#002200 12px);}
+.gnd-film   {background:#0d0000;}
+.gnd-chaos  {animation:rbGnd 3s linear infinite;}
+@keyframes rbGnd{0%{background:#1a0030;}33%{background:#003018;}66%{background:#301800;}100%{background:#1a0030;}}
 
-/* ── France (Napoleon) ── */
-.sky-france{background:linear-gradient(180deg,#002395 0%,#1A3AA8 40%,#4A6AC8 100%);}
-.gnd-france{background:linear-gradient(180deg,#2D5A1B 0%,#1A3A0A 60%,#0D2005 100%);}
-.grs-france{background:#3A7A20;}
+.grs-day    {background:#44cc66;}
+.grs-night  {background:#0d2d0d;}
+.grs-usa    {background:#aa2222;}
+.grs-uk     {background:#aa2222;}
+.grs-pop    {background:#ff00ff;}
+.grs-sport  {background:#3a9a3a;}
+.grs-film   {background:#ffcc00;}
+.grs-chaos  {animation:rbGrs 3s linear infinite;}
+@keyframes rbGrs{0%{background:#ff006e;}33%{background:#06ffa5;}66%{background:#ffbe0b;}100%{background:#ff006e;}}
 
-/* ── Germany (Nazi era) ── */
-.sky-germany{background:linear-gradient(180deg,#888888 0%,#AAAAAA 50%,#CCCCCC 100%);}
-.gnd-germany{background:linear-gradient(180deg,#2A3A2A 0%,#1A2A1A 60%,#0D1A0D 100%);}
-.grs-germany{background:#3A4A2A;}
+/* ── Pixel stars ── */
+#stars{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity 1.5s;}
+.star{position:absolute;background:white;image-rendering:pixelated;}
+.star-s{width:2px;height:2px;}
+.star-m{width:4px;height:4px;}
 
-/* ── Soviet Russia ── */
-.sky-russia{background:linear-gradient(180deg,#8B0000 0%,#AA1A1A 40%,#CC3333 100%);}
-.gnd-russia{background:linear-gradient(180deg,#FFFFFF 0%,#DDDDDD 30%,#AAAAAA 100%);}
-.grs-russia{background:#888888;}
+/* Pixel city silhouette strip */
+#city{position:fixed;bottom:28%;left:0;right:0;height:60px;z-index:2;pointer-events:none;opacity:0;transition:opacity 1.5s;}
 
-/* ── North Korea ── */
-.sky-northkorea{background:linear-gradient(180deg,#CC0000 0%,#990000 50%,#660000 100%);}
-.gnd-northkorea{background:linear-gradient(180deg,#1A3A1A 0%,#0D2A0D 60%,#051505 100%);}
-.grs-northkorea{background:#2A4A2A;}
+/* ── Scene decorations ── */
+#scene-deco{position:fixed;bottom:28%;z-index:2;left:8%;opacity:0;transition:opacity 1.5s;}
 
-/* ── Iraq / Middle East ── */
-.sky-iraq{background:linear-gradient(180deg,#D2691E 0%,#E8A84A 40%,#F5CC7A 100%);}
-.gnd-iraq{background:linear-gradient(180deg,#A0702A 0%,#785018 60%,#503508 100%);}
-.grs-iraq{background:#8B6914;}
-
-/* ── Venezuela ── */
-.sky-venezuela{background:linear-gradient(180deg,#CF142B 0%,#006BBF 50%,#CE1126 100%);}
-.gnd-venezuela{background:linear-gradient(180deg,#007A33 0%,#005522 60%,#003311 100%);}
-.grs-venezuela{background:#228B22;}
-
-/* ── China ── */
-.sky-china{background:linear-gradient(180deg,#DE2910 0%,#C01A0A 50%,#A00A00 100%);}
-.gnd-china{background:linear-gradient(180deg,#2D6A1A 0%,#1A4A0A 60%,#0D2A05 100%);}
-.grs-china{background:#3A7A2A;}
-
-/* ── Rainbow (chaos mode) ── */
-.sky-rainbow{animation:rbSky 3s linear infinite;}
-.gnd-rainbow{animation:rbGnd 3s linear infinite;}
-.grs-rainbow{animation:rbGrs 3s linear infinite;}
-@keyframes rbSky{0%{background:linear-gradient(180deg,#FF6B6B,#FFB347);}25%{background:linear-gradient(180deg,#FFE66D,#6BCB77);}50%{background:linear-gradient(180deg,#4D96FF,#C77DFF);}75%{background:linear-gradient(180deg,#FF8FAB,#FF6B6B);}100%{background:linear-gradient(180deg,#FF6B6B,#FFB347);}}
-@keyframes rbGnd{0%{background:#2D6A4F;}25%{background:#3A5A2A;}50%{background:#2D4A7A;}75%{background:#4A2A5A;}100%{background:#2D6A4F;}}
-@keyframes rbGrs{0%{background:#4CAF50;}50%{background:#9C27B0;}100%{background:#4CAF50;}}
-
-/* ── BACKGROUND DETAILS ── */
-/* Sun */
-#sun{position:fixed;top:6%;left:50%;transform:translateX(-50%);
-  width:58px;height:58px;border-radius:50%;
-  background:radial-gradient(circle,#FFE55A 40%,#FFB800 100%);
-  box-shadow:0 0 0 10px rgba(255,220,0,0.15),0 0 0 24px rgba(255,200,0,0.08);
-  animation:sunPulse 3s ease-in-out infinite;transition:opacity 1.5s;}
-@keyframes sunPulse{0%,100%{box-shadow:0 0 0 10px rgba(255,220,0,0.18),0 0 0 24px rgba(255,200,0,0.08)}50%{box-shadow:0 0 0 18px rgba(255,220,0,0.2),0 0 0 38px rgba(255,200,0,0.1)}}
-
-/* Pyramid for egypt */
-#pyramid{position:fixed;bottom:32%;left:10%;z-index:2;width:0;height:0;
-  border-left:50px solid transparent;border-right:50px solid transparent;
-  border-bottom:70px solid rgba(180,140,60,0.7);opacity:0;transition:opacity 1.5s;}
-/* Colosseum silhouette for rome */
-#colosseum{position:fixed;bottom:32%;left:8%;z-index:2;opacity:0;transition:opacity 1.5s;
-  width:80px;height:44px;background:rgba(120,100,70,0.55);border-radius:12px 12px 0 0;}
-#colosseum::before{content:'';position:absolute;top:10px;left:8px;right:8px;height:34px;
-  background:rgba(90,70,40,0.55);border-radius:8px 8px 0 0;}
-/* Kremlin for russia */
-#kremlin{position:fixed;bottom:32%;left:8%;z-index:2;opacity:0;transition:opacity 1.5s;}
-#kremlin-tower{width:22px;height:50px;background:rgba(200,40,40,0.55);position:relative;}
-#kremlin-dome{position:absolute;top:-14px;left:50%;transform:translateX(-50%);
-  width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;
-  border-bottom:18px solid rgba(255,215,0,0.7);}
-/* Eiffel for france */
-#eiffel{position:fixed;bottom:32%;right:10%;z-index:2;opacity:0;transition:opacity 1.5s;
-  width:0;height:0;border-left:24px solid transparent;border-right:24px solid transparent;
-  border-bottom:70px solid rgba(80,80,120,0.5);}
-#eiffel::before{content:'';position:absolute;top:16px;left:-14px;right:-14px;
-  border-left:14px solid transparent;border-right:14px solid transparent;
-  border-bottom:54px solid rgba(80,80,120,0.5);width:0;height:0;}
-/* Stars for sparkles */
-#sparkles{position:fixed;inset:0;z-index:2;opacity:0;transition:opacity 1s;pointer-events:none;}
-.sparkle{position:absolute;font-size:20px;animation:spk 4s ease-in-out infinite;}
-@keyframes spk{0%,100%{transform:translateY(0) rotate(0deg);opacity:.7}50%{transform:translateY(-22px) rotate(180deg);opacity:1}}
-
-/* clouds */
+/* Clouds (pixelated) */
 .cloud{position:fixed;z-index:2;transition:opacity 1.5s;}
-.cloud-body{position:relative;border-radius:50px;background:rgba(255,255,255,0.82);}
-.cloud-body::before,.cloud-body::after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,0.82);}
-#cl1{top:15%;left:5%;}#cl2{top:22%;right:7%;}
-#cl1 .cloud-body{width:80px;height:26px;}
-#cl1 .cloud-body::before{width:38px;height:38px;top:-17px;left:10px;}
-#cl1 .cloud-body::after{width:28px;height:28px;top:-12px;left:38px;}
-#cl2 .cloud-body{width:60px;height:20px;}
-#cl2 .cloud-body::before{width:30px;height:30px;top:-13px;left:8px;}
-#cl2 .cloud-body::after{width:22px;height:22px;top:-9px;left:28px;}
-#cl1{animation:flt 7s ease-in-out infinite;}#cl2{animation:flt 9s ease-in-out infinite;animation-delay:-4s;}
-@keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.cloud-body{position:relative;background:rgba(180,180,255,0.25);image-rendering:pixelated;}
+#cl1{top:15%;left:4%;animation:flt 8s ease-in-out infinite;}
+#cl2{top:25%;right:6%;animation:flt 10s ease-in-out infinite;animation-delay:-4s;}
+#cl1 .cloud-body{width:72px;height:16px;}
+#cl1 .cloud-body::before{content:'';position:absolute;width:40px;height:16px;background:rgba(180,180,255,0.25);top:-16px;left:12px;}
+#cl1 .cloud-body::after{content:'';position:absolute;width:24px;height:16px;background:rgba(180,180,255,0.25);top:-28px;left:20px;}
+#cl2 .cloud-body{width:56px;height:12px;}
+#cl2 .cloud-body::before{content:'';position:absolute;width:32px;height:12px;background:rgba(180,180,255,0.25);top:-12px;left:10px;}
+#cl2 .cloud-body::after{content:'';position:absolute;width:20px;height:12px;background:rgba(180,180,255,0.25);top:-22px;left:16px;}
+@keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 
-/* stars (night) */
-#stars{position:fixed;inset:0;z-index:1;opacity:0;transition:opacity 1.5s;pointer-events:none;}
-.star{position:absolute;background:white;border-radius:50%;animation:twinkle 2.5s ease-in-out infinite;}
-@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:1}}
-
-/* ── BANNER (enemy name) ── */
-#enemy-banner{
-  position:fixed;top:5%;left:50%;transform:translateX(-50%);
-  z-index:55;background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);
-  color:white;font-size:16px;padding:6px 18px;border-radius:24px;
-  border:1.5px solid rgba(255,255,255,0.2);
-  white-space:nowrap;opacity:0;transition:opacity .6s;pointer-events:none;
-}
-#enemy-banner.show{opacity:1;}
-
-/* ══ ARENA ══ */
+/* ══ PIXEL CHARACTERS ══ */
+/* Each character is built as a grid of pixel blocks using CSS */
 #arena{
-  position:fixed;bottom:28%;left:0;right:0;
+  position:fixed;bottom:26%;left:0;right:0;
   display:flex;justify-content:center;align-items:flex-end;
-  gap:10vw;
-  z-index:10;
+  gap:18vw;z-index:10;
 }
 
 .char-wrap{
   position:relative;display:flex;flex-direction:column;align-items:center;
   transform-origin:bottom center;
-  filter:drop-shadow(0 8px 14px rgba(0,0,0,0.35));
+  image-rendering:pixelated;
+  filter:drop-shadow(0 6px 0 rgba(0,0,0,0.6));
 }
 
-/* ── BASE CHAR PARTS ── */
-/* Head */
-.c-head{position:relative;width:50px;height:46px;border-radius:50%;margin-bottom:-5px;z-index:2;}
-.c-ear-l,.c-ear-r{position:absolute;top:-9px;width:13px;height:17px;border-radius:50% 50% 30% 30%;}
-.c-ear-l{left:4px;transform:rotate(-12deg);}
-.c-ear-r{right:4px;transform:rotate(12deg);}
-.c-inner-ear{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:6px;height:9px;background:rgba(255,160,160,0.55);border-radius:50%;}
-.c-helm{position:absolute;top:13px;left:0;right:0;height:13px;border-radius:8px;opacity:.88;}
-.c-helm-jewel{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;}
-.c-eyes{position:absolute;top:25px;left:0;right:0;display:flex;justify-content:center;gap:9px;}
-.c-eye{width:9px;height:10px;background:white;border-radius:50%;position:relative;}
-.c-eye::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:5.5px;height:6.5px;border-radius:50%;}
-.c-blush-l{position:absolute;top:32px;left:4px;width:9px;height:5px;background:rgba(255,100,120,0.32);border-radius:50%;}
-.c-blush-r{position:absolute;top:32px;right:4px;width:9px;height:5px;background:rgba(255,100,120,0.32);border-radius:50%;}
-.c-snout{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:18px;height:13px;border-radius:50%;}
-.c-nose{position:absolute;top:2px;left:50%;transform:translateX(-50%);width:7px;height:5px;border-radius:50%;}
-/* Body */
-.c-body{position:relative;width:50px;height:52px;border-radius:24px 24px 16px 16px;}
-.c-belly{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:26px;height:26px;border-radius:50%;}
-.c-belt{position:absolute;bottom:0;left:0;right:0;height:12px;border-radius:0 0 16px 16px;}
-.c-belt-knot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;}
-.c-sword{position:absolute;right:-13px;top:-18px;width:5px;height:56px;background:linear-gradient(180deg,#E8E8E8,#B0B0B0);border-radius:3px 3px 1px 1px;}
-.c-sword::before{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);width:13px;height:7px;border-radius:3px;}
-.c-sword::after{content:'';position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);width:4px;height:7px;background:#FFD700;border-radius:2px 2px 0 0;}
-/* Legs */
-.c-legs{display:flex;gap:7px;margin-top:2px;}
-.c-leg{width:17px;height:19px;border-radius:7px 7px 9px 9px;}
-.c-foot{width:20px;height:7px;border-radius:4px;margin-top:1px;margin-left:-2px;}
-/* Shadow */
-.char-shadow{width:80%;height:9px;border-radius:50%;background:rgba(0,0,0,0.2);margin-top:2px;transition:transform .3s;}
+/* Pixel character: built from .px-row divs */
+.px-char{display:flex;flex-direction:column;align-items:center;gap:0;}
+.px-row{display:flex;gap:0;}
+.px{width:6px;height:6px;image-rendering:pixelated;flex-shrink:0;}
 
-/* ── SPECIAL PARTS ── */
-.c-halo{position:absolute;top:-18px;left:50%;transform:translateX(-50%);
-  width:36px;height:12px;border-radius:50%;
-  border:4px solid #FFD700;background:transparent;
-  box-shadow:0 0 8px #FFD700,0 0 16px rgba(255,215,0,0.4);}
-.c-robe-bottom{position:absolute;bottom:-6px;left:-4px;right:-4px;height:14px;
-  background:inherit;border-radius:0 0 12px 12px;z-index:-1;}
-.c-beard{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);
-  width:20px;height:14px;border-radius:4px 4px 50% 50%;opacity:.85;}
-.c-moustache{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
-  width:20px;height:5px;border-radius:10px;opacity:.9;}
-.c-hat-flat{position:absolute;top:-8px;left:50%;transform:translateX(-50%);
-  width:40px;height:8px;border-radius:3px;}
-.c-hat-top{position:absolute;top:-26px;left:50%;transform:translateX(-50%);
-  width:22px;height:20px;border-radius:4px;}
-.c-crown{position:absolute;top:-16px;left:50%;transform:translateX(-50%);
-  width:38px;height:14px;background:currentColor;clip-path:polygon(0 100%,0 40%,20% 0,40% 40%,60% 0,80% 40%,100% 0,100% 100%);}
-.c-laurel{position:absolute;top:-14px;left:50%;transform:translateX(-50%);
-  width:40px;height:12px;border-radius:50%;
-  border:4px solid #6B8E23;background:transparent;}
-.c-arm-staff{position:absolute;left:-16px;top:2px;width:4px;height:48px;border-radius:2px;background:#8B6914;}
-.c-arm-staff::after{content:'⭐';position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:14px;}
-.c-cape{position:absolute;top:4px;right:-10px;width:16px;height:38px;border-radius:0 50% 50% 0;opacity:.7;}
-.c-helmet-roman{position:absolute;top:-6px;left:0;right:0;height:16px;border-radius:8px 8px 0 0;}
-.c-helmet-roman::before{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);
-  width:8px;height:12px;border-radius:4px;background:inherit;}
-.c-helmet-roman::after{content:'';position:absolute;top:-16px;left:50%;transform:translateX(-50%);
-  width:30px;height:6px;border-radius:3px;background:rgba(255,0,0,0.7);}
-.c-armband{position:absolute;top:4px;left:2px;right:2px;height:10px;border-radius:5px;opacity:.6;}
-.c-fur-collar{position:absolute;top:0;left:-2px;right:-2px;height:12px;border-radius:6px;opacity:.85;}
-/* Mao collar */
-.c-mao-collar{position:absolute;top:0;left:0;right:0;height:14px;border-radius:12px 12px 0 0;opacity:.9;}
-/* Kim bouffant hair */
-.c-bouffant{position:absolute;top:-14px;left:50%;transform:translateX(-50%);
-  width:44px;height:16px;border-radius:50% 50% 30% 30%;}
-/* Star badge */
-.c-star-badge{position:absolute;top:8px;left:6px;font-size:12px;line-height:1;}
-/* Tie */
-.c-tie{position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:10px;height:26px;clip-path:polygon(20% 0,80% 0,100% 70%,50% 100%,0 70%);opacity:.9;}
-/* Turban */
-.c-turban{position:absolute;top:-14px;left:50%;transform:translateX(-50%);
-  width:46px;height:16px;border-radius:50% 50% 20% 20%;}
-/* Toga drape */
-.c-toga{position:absolute;top:6px;left:-4px;width:12px;height:32px;border-radius:6px;opacity:.7;}
+/* Animations */
+@keyframes idleL{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes idleR{0%,100%{transform:scaleX(-1) translateY(0)}50%{transform:scaleX(-1) translateY(-8px)}}
+.idle-l{animation:idleL 1.6s ease-in-out infinite;}
+.idle-r{transform:scaleX(-1);animation:idleR 1.6s ease-in-out infinite;}
 
-/* ── Idle animations ── */
-@keyframes idleBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-@keyframes idleBounceFlip{0%,100%{transform:scaleX(-1) translateY(0)}50%{transform:scaleX(-1) translateY(-9px)}}
-.idle-l{animation:idleBounce 1.8s ease-in-out infinite;}
-.idle-r{transform:scaleX(-1);animation:idleBounceFlip 1.8s ease-in-out infinite;}
-
-@keyframes slashAnim{0%{transform:scaleX(1) rotate(0) translateX(0);}40%{transform:scaleX(1) rotate(-10deg) translateX(60px) scale(1.12);}100%{transform:scaleX(1) rotate(0) translateX(0);}}
+@keyframes slashAnim{
+  0%  {transform:scaleX(1) rotate(0) translateX(0);}
+  40% {transform:scaleX(1) rotate(-12deg) translateX(55px) scale(1.1);}
+  100%{transform:scaleX(1) rotate(0) translateX(0);}
+}
 .attack-l{animation:slashAnim .35s ease-out forwards;}
-@keyframes fallEnemy{0%{transform:scaleX(-1) translateY(0) rotate(0);}100%{transform:scaleX(-1) translateY(44px) rotate(55deg);opacity:.2;}}
+
+@keyframes fallEnemy{
+  0%  {transform:scaleX(-1) translateY(0) rotate(0);}
+  100%{transform:scaleX(-1) translateY(40px) rotate(55deg);opacity:.15;}
+}
 .defeated-r{animation:fallEnemy .55s ease-out forwards;}
-@keyframes fallPlayer{0%{transform:scaleX(1) translateY(0) rotate(0);}100%{transform:scaleX(1) translateY(44px) rotate(-55deg);opacity:.2;}}
+
+@keyframes fallPlayer{
+  0%  {transform:scaleX(1) translateY(0) rotate(0);}
+  100%{transform:scaleX(1) translateY(40px) rotate(-55deg);opacity:.15;}
+}
 .defeated-l{animation:fallPlayer .6s ease-out forwards;}
-@keyframes lungeFwd{0%{transform:scaleX(-1) translateX(0);}50%{transform:scaleX(-1) translateX(-80px) rotate(12deg) scale(1.18);}100%{transform:scaleX(-1) translateX(-40px) rotate(6deg) scale(1.1);}}
+
+@keyframes lungeFwd{
+  0%  {transform:scaleX(-1) translateX(0);}
+  50% {transform:scaleX(-1) translateX(-75px) rotate(12deg) scale(1.15);}
+  100%{transform:scaleX(-1) translateX(-35px) rotate(6deg) scale(1.08);}
+}
 .lunge-r{animation:lungeFwd .45s ease-out forwards;}
-@keyframes runFwd{0%{transform:scaleX(1) translateX(0) translateY(0);}25%{transform:scaleX(1) translateX(20vw) translateY(-16px);}55%{transform:scaleX(1) translateX(50vw) translateY(0);}75%{transform:scaleX(1) translateX(72vw) translateY(-12px);}100%{transform:scaleX(1) translateX(120vw) translateY(0);}}
+
+@keyframes runFwd{
+  0%  {transform:scaleX(1) translateX(0) translateY(0);}
+  25% {transform:scaleX(1) translateX(18vw) translateY(-14px);}
+  55% {transform:scaleX(1) translateX(48vw) translateY(0);}
+  80% {transform:scaleX(1) translateX(70vw) translateY(-10px);}
+  100%{transform:scaleX(1) translateX(120vw) translateY(0);}
+}
 .run-fwd{animation:runFwd 1.3s cubic-bezier(.4,0,.55,1) forwards;}
-@keyframes slideIn{0%{transform:scaleX(-1) translateX(-130vw);}100%{transform:scaleX(-1) translateX(0);}}
+
+@keyframes slideIn{
+  0%  {transform:scaleX(-1) translateX(-130vw);}
+  100%{transform:scaleX(-1) translateX(0);}
+}
 .slide-in{animation:slideIn .9s cubic-bezier(.22,1.4,.64,1) forwards;}
 
+.char-shadow{
+  width:75%;height:6px;
+  background:rgba(0,0,0,0.5);
+  margin-top:2px;
+  image-rendering:pixelated;
+  clip-path:polygon(5% 0,95% 0,100% 100%,0 100%);
+}
+
 /* ══ HUD ══ */
-#kill-badge{position:fixed;top:14px;right:14px;z-index:50;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);color:white;font-size:17px;padding:5px 14px;border-radius:28px;border:1.5px solid rgba(255,255,255,0.2);display:none;}
-#timer-wrap{position:fixed;top:10%;left:50%;transform:translateX(-50%);width:210px;height:13px;border-radius:10px;background:rgba(255,255,255,0.25);border:2px solid rgba(255,255,255,0.5);z-index:50;opacity:0;transition:opacity .2s;}
+#kill-badge{
+  position:fixed;top:12px;right:12px;z-index:50;
+  background:#000;border:2px solid #44cc66;
+  color:#44cc66;font-size:10px;padding:5px 10px;
+  letter-spacing:1px;display:none;
+  font-family:'Press Start 2P',monospace;
+}
+#timer-wrap{
+  position:fixed;top:8%;left:50%;transform:translateX(-50%);
+  width:200px;height:12px;border:2px solid #44cc66;
+  background:#000;z-index:50;opacity:0;transition:opacity .2s;
+  image-rendering:pixelated;
+}
 #timer-wrap.show{opacity:1;}
-#timer-bar{height:100%;border-radius:8px;background:linear-gradient(90deg,#2ECC71,#FFD700,#FF4757);transition:width linear;}
-#exclaim{position:fixed;top:14%;left:50%;transform:translateX(-50%);z-index:50;display:flex;flex-direction:column;align-items:center;opacity:0;pointer-events:none;transition:opacity .1s;}
+#timer-bar{height:100%;background:#44cc66;transition:width linear;}
+
+/* Exclaim */
+#exclaim{position:fixed;top:12%;left:50%;transform:translateX(-50%);z-index:50;
+  display:flex;flex-direction:column;align-items:center;opacity:0;pointer-events:none;transition:opacity .1s;}
 #exclaim.show{opacity:1;}
-.ex-bang{font-size:110px;line-height:1;color:#FF4757;text-shadow:0 0 30px rgba(255,71,87,.6),5px 5px 0 #900;animation:exPop .22s cubic-bezier(.34,1.56,.64,1) both;}
-.ex-sub{font-size:21px;color:#FF4757;background:white;padding:4px 17px;border-radius:20px;border:3px solid #FF4757;margin-top:-8px;white-space:nowrap;animation:exPop .28s .04s cubic-bezier(.34,1.56,.64,1) both;}
-@keyframes exPop{0%{transform:scale(0) rotate(-15deg)}100%{transform:scale(1) rotate(0)}}
-#tap-hint{position:fixed;bottom:8%;left:50%;transform:translateX(-50%);z-index:50;font-family:'Nunito',sans-serif;font-weight:900;font-size:13px;color:rgba(255,255,255,.85);background:rgba(0,0,0,.22);padding:7px 20px;border-radius:24px;letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;backdrop-filter:blur(3px);animation:hintP 2s ease-in-out infinite;}
-@keyframes hintP{0%,100%{opacity:.5}50%{opacity:1}}
-#flash{position:fixed;inset:0;background:white;opacity:0;pointer-events:none;z-index:80;transition:opacity .07s;}
-#flash.go{opacity:.85;}
+.ex-bang{
+  font-size:110px;line-height:1;color:#dd2244;
+  text-shadow:4px 4px 0 #000,8px 8px 0 #550010;
+  image-rendering:pixelated;
+  animation:exPop .2s steps(3) both;
+}
+.ex-sub{
+  font-family:'Press Start 2P',monospace;
+  font-size:12px;color:#dd2244;background:#000;
+  padding:5px 12px;border:2px solid #dd2244;
+  margin-top:-4px;white-space:nowrap;
+  animation:exPop .25s steps(3) .04s both;
+}
+@keyframes exPop{0%{transform:scale(0)}100%{transform:scale(1)}}
+
+/* Enemy name banner */
+#enemy-banner{
+  position:fixed;top:4%;left:50%;transform:translateX(-50%);
+  z-index:55;background:#000;border:2px solid #44cc66;
+  color:#44cc66;font-size:9px;padding:5px 12px;
+  white-space:nowrap;opacity:0;transition:opacity .5s;
+  font-family:'Press Start 2P',monospace;letter-spacing:1px;
+}
+#enemy-banner.show{opacity:1;}
+
+/* Wind */
+#wind-container{position:fixed;inset:0;z-index:6;pointer-events:none;overflow:hidden;}
+.wind-particle{
+  position:absolute;border-radius:0;
+  background:rgba(120,180,130,0.45);
+  animation:windMove linear infinite;opacity:0;
+  image-rendering:pixelated;
+}
+@keyframes windMove{
+  0%  {transform:translateX(-180px);opacity:0;}
+  10% {opacity:1;}
+  90% {opacity:0.7;}
+  100%{transform:translateX(110vw);opacity:0;}
+}
+
+/* Flash */
+#flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:80;transition:opacity .07s;}
+#flash.go{opacity:.9;}
 #run-block{position:fixed;inset:0;z-index:18;display:none;}
-.conf{position:fixed;border-radius:3px;animation:confFall linear forwards;pointer-events:none;z-index:90;}
-@keyframes confFall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(800deg);opacity:0}}
+.conf{position:fixed;image-rendering:pixelated;animation:confFall linear forwards;pointer-events:none;z-index:90;}
+@keyframes confFall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
 
 /* ══ SCREENS ══ */
 .screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:60;transition:opacity .3s;}
 .screen.hidden{opacity:0;pointer-events:none;}
-.card{background:white;border-radius:28px;padding:24px 22px 20px;text-align:center;box-shadow:0 18px 48px rgba(0,0,0,.22),0 4px 0 #FFD700;border:3px solid #FFD700;width:88vw;max-width:320px;}
-.game-title{font-size:clamp(36px,10vw,50px);color:#1A1A2E;text-shadow:4px 4px 0 #FFD700;line-height:1;}
-.game-sub{font-family:'Nunito',sans-serif;font-weight:900;font-size:12px;color:#aaa;letter-spacing:3px;text-transform:uppercase;margin-top:4px;}
-.preview-row{display:flex;justify-content:center;align-items:flex-end;gap:10px;margin:16px 0 13px;}
-.vs-badge{font-size:17px;color:white;background:#FF4757;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 0 #900;flex-shrink:0;margin-bottom:10px;}
-.start-btn,.again-btn{font-family:'Fredoka One',cursive;color:white;border:none;outline:none;padding:13px 0;border-radius:50px;cursor:pointer;width:100%;letter-spacing:1px;transition:transform .1s,box-shadow .1s;}
-.start-btn{font-size:26px;background:linear-gradient(180deg,#FF6B7A,#FF4757);box-shadow:0 6px 0 #900,0 10px 22px rgba(255,71,87,.35);}
-.start-btn:active{transform:translateY(5px);box-shadow:0 1px 0 #900;}
-.again-btn{font-size:22px;background:linear-gradient(180deg,#5DE680,#27AE60);box-shadow:0 6px 0 #1a7a40;margin-top:16px;}
-.again-btn:active{transform:translateY(4px);box-shadow:0 2px 0 #1a7a40;}
-.card-hint{font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;color:#888;margin-top:11px;line-height:1.4;}
-.r-emoji{font-size:64px;display:block;animation:eB .5s .2s cubic-bezier(.34,1.56,.64,1) both;}
-@keyframes eB{0%{transform:scale(0)}100%{transform:scale(1)}}
-.r-title{font-size:clamp(40px,12vw,54px);line-height:1;margin-top:2px;color:#FF4757;text-shadow:3px 3px 0 #900;}
-.r-streak{font-family:'Nunito',sans-serif;font-weight:900;font-size:16px;color:#555;margin-top:10px;line-height:1.5;}
-.r-streak span{color:#FF4757;}
-.thanks{font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;color:#bbb;margin-top:8px;}
-@keyframes cardPop{0%{transform:scale(.3) translateY(80px);opacity:0}100%{transform:scale(1);opacity:1}}
 
-/* ── Villain list ── */
-#villain-list-wrap{
-  margin-top:12px;
-  max-height:130px;
-  overflow-y:auto;
-  border-radius:14px;
-  background:#F9F9F9;
-  border:2px solid #F0E8D0;
-  padding:6px 4px;
-  -webkit-overflow-scrolling:touch;
+/* Pixel card */
+.card{
+  background:#000;border:3px solid #44cc66;
+  padding:22px 20px 18px;text-align:center;
+  box-shadow:4px 4px 0 #44cc66;
+  width:90vw;max-width:340px;
+  image-rendering:pixelated;
 }
-#villain-list-wrap:empty{display:none;}
-.villain-item{
-  display:flex;align-items:center;gap:8px;
-  padding:5px 10px;border-radius:10px;
-  font-family:'Nunito',sans-serif;font-weight:900;font-size:13px;color:#333;
-  animation:vItem .3s cubic-bezier(.34,1.56,.64,1) both;
+.game-title{
+  font-size:clamp(20px,6vw,29px);color:#44cc66;
+  text-shadow:3px 3px 0 #0d2d0d;line-height:1.3;
+  letter-spacing:2px;
 }
-.villain-item:nth-child(odd){background:rgba(255,71,87,0.06);}
-.villain-num{font-size:11px;color:#bbb;min-width:18px;text-align:right;}
+.game-sub{
+  font-family:'Press Start 2P',monospace;
+  font-size:9px;color:#dd2244;letter-spacing:2px;margin-top:6px;
+}
+/* Lore text */
+.lore-text{
+  font-family:'Nunito',sans-serif;font-weight:700;
+  font-size:15px;color:#aaffaa;margin:14px 0 10px;
+  line-height:1.6;text-align:left;
+  border:1px solid #0d2d0d;padding:8px 10px;
+  background:rgba(120,180,130,0.05);
+}
+.lore-text em{color:#dd2244;font-style:normal;}
+
+.preview-row{display:flex;justify-content:center;align-items:flex-end;gap:8px;margin:12px 0;}
+.vs-badge{
+  font-size:9px;color:#dd2244;background:#000;
+  border:2px solid #dd2244;
+  width:30px;height:30px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-bottom:12px;
+}
+.start-btn,.again-btn{
+  font-family:'Press Start 2P',monospace;color:#000;border:none;outline:none;
+  padding:12px 0;cursor:pointer;width:100%;letter-spacing:1px;
+  transition:transform .08s;font-size:12px;
+  image-rendering:pixelated;
+}
+.start-btn{background:#44cc66;box-shadow:0 4px 0 #0d2d0d;}
+.start-btn:active{transform:translateY(4px);box-shadow:none;}
+.again-btn{background:#dd2244;color:#fff;box-shadow:0 4px 0 #550010;margin-top:14px;font-size:11px;}
+.again-btn:active{transform:translateY(4px);box-shadow:none;}
+.card-hint{
+  font-family:'Nunito',sans-serif;font-weight:900;
+  font-size:12px;color:#556655;margin-top:10px;
+}
+
+/* End card */
+.r-emoji{font-size:57px;display:block;animation:eB .4s steps(4) .2s both;}
+@keyframes eB{0%{transform:scale(0)}100%{transform:scale(1)}}
+.r-title{font-size:clamp(24px,8vw,33px);line-height:1.2;margin-top:6px;color:#dd2244;text-shadow:3px 3px 0 #550010;}
+.r-streak{font-family:'Nunito',sans-serif;font-weight:900;font-size:16px;color:#aaffaa;margin-top:10px;line-height:1.5;}
+.r-streak span{color:#44cc66;}
+.thanks{font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;color:#446644;margin-top:8px;}
+
+/* Villain list */
+#villain-list-wrap{margin-top:10px;max-height:120px;overflow-y:auto;border:1px solid #0d2d0d;background:#000a00;padding:4px 2px;-webkit-overflow-scrolling:touch;}
+.villain-item{display:flex;align-items:center;gap:6px;padding:4px 8px;font-family:'Nunito',sans-serif;font-weight:900;font-size:13px;color:#aaffaa;animation:vItem .3s steps(3) both;}
+.villain-item:nth-child(odd){background:rgba(120,180,130,0.04);}
+.villain-num{font-size:11px;color:#446644;min-width:16px;text-align:right;font-family:'Press Start 2P',monospace;}
 .villain-emoji{font-size:16px;line-height:1;}
 .villain-name{flex:1;text-align:left;}
-.villain-check{color:#27AE60;font-size:14px;}
-@keyframes vItem{0%{transform:translateX(-12px);opacity:0}100%{transform:translateX(0);opacity:1}}
+.villain-check{color:#44cc66;font-size:15px;}
+@keyframes vItem{0%{transform:translateX(-10px);opacity:0}100%{transform:translateX(0);opacity:1}}
+
+/* Percentile */
+#r-percentile{margin-top:8px;padding:6px 10px;font-family:'Press Start 2P',monospace;font-size:7px;line-height:1.6;display:none;letter-spacing:1px;}
+#r-percentile.show{display:block;}
+.pct-top    {background:#001a00;border:1px solid #44cc66;color:#44cc66;}
+.pct-good   {background:#001a00;border:1px solid #aaffaa;color:#aaffaa;}
+.pct-mid    {background:#001010;border:1px solid #00aaff;color:#00aaff;}
+.pct-low    {background:#1a0000;border:1px solid #dd2244;color:#dd2244;}
+
+/* Toast */
+@keyframes toastIn{0%{transform:translateX(-50%) translateY(-14px);opacity:0}100%{transform:translateX(-50%) translateY(0);opacity:1}}
+@keyframes cardPop{0%{transform:scale(.2);opacity:0}100%{transform:scale(1);opacity:1}}
 </style>
 </head>
 <body>
 
 <!-- ══ SCENE ══ -->
-<div id="sky"    class="sky-jerusalem"></div>
-<div id="ground" class="gnd-jerusalem"></div>
-<div id="grass"  class="grs-jerusalem"></div>
-<div id="sun"></div>
-<div id="pyramid"></div>
-<div id="colosseum"><div></div></div>
-<div id="kremlin"><div id="kremlin-tower"><div id="kremlin-dome"></div></div></div>
-<div id="eiffel"></div>
+<div id="sky" class="sky-day"></div>
+<div id="ground" class="gnd-day"></div>
+<div id="grass" class="grs-day"></div>
+<div id="scanlines"></div>
 <div id="stars"></div>
-<div id="sparkles"></div>
 <div class="cloud" id="cl1"><div class="cloud-body"></div></div>
 <div class="cloud" id="cl2"><div class="cloud-body"></div></div>
 
 <!-- ENEMY BANNER -->
-<div id="enemy-banner">👑 Julius Caesar</div>
+<div id="enemy-banner">★ ENEMY ★</div>
 
 <!-- ══ ARENA ══ -->
 <div id="arena">
@@ -351,25 +331,30 @@ body{font-family:'Fredoka One',cursive;width:100vw;height:100vh;overflow:hidden;
 </div>
 
 <!-- ══ HUD ══ -->
-<div id="kill-badge">⚔️ <span id="kc">0</span></div>
+<div id="kill-badge">KILLS: <span id="kc">0</span></div>
 <div id="timer-wrap"><div id="timer-bar"></div></div>
-<div id="exclaim"><span class="ex-bang">!</span><span class="ex-sub">DRAW NOW!</span></div>
-<div id="tap-hint">Waiting...</div>
+<div id="exclaim"><span class="ex-bang">!</span><span class="ex-sub">PRESS NOW</span></div>
 <div id="flash"></div>
 <div id="run-block"></div>
+<div id="wind-container"></div>
 
 <!-- ══ LANDING ══ -->
 <div class="screen" id="scr-land">
   <div class="card">
-    <div class="game-title">ANIMEL DUELS</div>
-    <div class="game-sub">⚔️ Good vs. Evil ⚔️</div>
+    <div class="game-title">ANIMEL<br>DUELS</div>
+    <div class="game-sub">★ PIXEL JUSTICE ★</div>
+    <div class="lore-text">
+      You are <em>XBLORP</em> — an alien bounty hunter sent from Galaxy-7.<br><br>
+      Earth has produced some <em>real trash</em>. Politicians, divas, ego-monsters...<br><br>
+      Your mission: <em>clean the planet.</em> One celebrity at a time. Go get them.
+    </div>
     <div class="preview-row">
       <div id="preview-left"></div>
       <div class="vs-badge">VS</div>
       <div id="preview-right"></div>
     </div>
-    <button class="start-btn" id="startBtn">⚔️ START DUEL</button>
-    <p class="card-hint">Tap when you see the !<br>But not before! ☝️</p>
+    <button class="start-btn" id="startBtn">▶ START MISSION</button>
+    <p class="card-hint">Tap when you see the ! — not before</p>
   </div>
 </div>
 
@@ -378,305 +363,326 @@ body{font-family:'Fredoka One',cursive;width:100vw;height:100vh;overflow:hidden;
 
 <!-- ══ END ══ -->
 <div class="screen hidden" id="scr-end">
-  <div class="card" style="animation:cardPop .45s cubic-bezier(.34,1.56,.64,1) both;">
+  <div class="card" style="animation:cardPop .4s steps(6) both;">
     <span class="r-emoji">💀</span>
-    <div class="r-title">DEFEAT!</div>
-    <div class="r-streak" id="r-streak">You fell on your first duel!</div>
+    <div class="r-title">MISSION FAILED</div>
+    <div class="r-streak" id="r-streak">Eliminated on first contact!</div>
+    <div id="r-percentile"></div>
     <div id="villain-list-wrap"></div>
-    <div class="thanks">Thanks for playing! ✝️</div>
-    <button class="again-btn" id="againBtn">🏠 Back to Menu</button>
+    <div class="thanks">Thanks for playing, XBLORP! 👾</div>
+    <button class="again-btn" id="againBtn">↩ BACK TO BASE</button>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════════
-//  CHARACTER BUILDER
-// ══════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+//  PIXEL ART CHARACTER BUILDER
+//  Each character is a 2D array of color codes
+//  rendered as a grid of 6×6px divs
+// ══════════════════════════════════════════════════════
 
-function el(tag, cls, style, inner) {
-  return `<div class="${cls||''}" style="${style||''}">${inner||''}</div>`;
+const _ = null; // transparent
+
+// Render a pixel grid: 2D array → HTML string
+function renderPixels(grid, scale = 6) {
+  let html = '<div class="px-char">';
+  for (const row of grid) {
+    html += '<div class="px-row">';
+    for (const col of row) {
+      if (col === null) {
+        html += `<div style="width:${scale}px;height:${scale}px;flex-shrink:0;"></div>`;
+      } else {
+        html += `<div style="width:${scale}px;height:${scale}px;background:${col};flex-shrink:0;image-rendering:pixelated;"></div>`;
+      }
+    }
+    html += '</div>';
+  }
+  html += '</div>';
+  return html;
 }
 
-// Build a generic character from a config object
-function buildChar(cfg) {
-  // cfg: { headColor, bodyColor, bellyColor, beltColor, legColor, footColor,
-  //         eyeColor, noseColor, snoutColor, helmColor, helmJewel,
-  //         earColor, earInner(bool), sword(bool),
-  //         extras: [] html strings appended to head/body }
+// ── XBLORP — alien player (pink) ──
+const ALIEN_PINK   = '#ff69b4';
+const ALIEN_DARK   = '#cc3377';
+const ALIEN_EYE    = '#33cccc';
+const ALIEN_PUPIL  = '#003333';
+const ALIEN_WEAPON = '#aaaaaa';
+const ALIEN_WDARK  = '#666666';
+const ALIEN_BELLY  = '#ff99cc';
+const ALIEN_SUIT   = '#220044';
+const ALIEN_SUIT2  = '#330066';
+const ALIEN_BOOT   = '#111122';
+const ALIEN_GLOW   = '#ff00ff';
 
-  const haloHTML   = cfg.halo    ? `<div class="c-halo"></div>` : '';
-  const laurelHTML = cfg.laurel  ? `<div class="c-laurel"></div>` : '';
-  const crownHTML  = cfg.crown   ? `<div class="c-crown" style="color:${cfg.crown}"></div>` : '';
-  const beardHTML  = cfg.beard   ? `<div class="c-beard" style="background:${cfg.beard}"></div>` : '';
-  const moustHTML  = cfg.moustasche ? `<div class="c-moustache" style="background:${cfg.moustasche}"></div>` : '';
-  const hatFlatHTML= cfg.hatFlat ? `<div class="c-hat-flat" style="background:${cfg.hatFlat}"></div><div class="c-hat-top" style="background:${cfg.hatTop||cfg.hatFlat}"></div>` : '';
-  const boufHTML   = cfg.bouffant? `<div class="c-bouffant" style="background:${cfg.bouffant}"></div>` : '';
-  const turbanHTML = cfg.turban  ? `<div class="c-turban" style="background:${cfg.turban}"></div>` : '';
-  const romHelmHTML= cfg.romanHelmet ? `<div class="c-helmet-roman" style="background:${cfg.romanHelmet}"></div>` : '';
-  const maoColHTML = cfg.maoCollar ? `<div class="c-mao-collar" style="background:${cfg.maoCollar}"></div>` : '';
-  const staffHTML  = cfg.staff   ? `<div class="c-arm-staff"></div>` : '';
-  const capeHTML   = cfg.cape    ? `<div class="c-cape" style="background:${cfg.cape}"></div>` : '';
-  const tieHTML    = cfg.tie     ? `<div class="c-tie" style="background:${cfg.tie}"></div>` : '';
-  const togaHTML   = cfg.toga    ? `<div class="c-toga" style="background:${cfg.toga}"></div>` : '';
-  const starBadgeHTML = cfg.starBadge ? `<div class="c-star-badge">⭐</div>` : '';
-  const furHTML    = cfg.fur     ? `<div class="c-fur-collar" style="background:${cfg.fur}"></div>` : '';
-  const armbandHTML= cfg.armband ? `<div class="c-armband" style="background:${cfg.armband}"></div>` : '';
-  const swordHTML  = cfg.sword !== false ? `<div class="c-sword" style="--sw-guard:${cfg.swordGuard||'#8B6914'}"><style>.c-sword::before{background:${cfg.swordGuard||'#8B6914'}!important}</style></div>` : '';
-  const robeHTML   = cfg.robe    ? `<div class="c-robe-bottom" style="background:${cfg.bodyColor}"></div>` : '';
+const ALIEN_GRID = [
+  // antennae
+  [_,_,_,_,ALIEN_DARK,_,_,ALIEN_DARK,_,_,_,_],
+  [_,_,_,ALIEN_GLOW,_,_,_,_,ALIEN_GLOW,_,_,_],
+  // head
+  [_,_,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,_,_],
+  [_,ALIEN_PINK,ALIEN_EYE,ALIEN_EYE,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_EYE,ALIEN_EYE,ALIEN_PINK,ALIEN_PINK,_],
+  [_,ALIEN_PINK,ALIEN_EYE,ALIEN_PUPIL,ALIEN_EYE,ALIEN_PINK,ALIEN_EYE,ALIEN_PUPIL,ALIEN_EYE,ALIEN_PINK,ALIEN_PINK,_],
+  [_,ALIEN_PINK,ALIEN_EYE,ALIEN_EYE,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_EYE,ALIEN_EYE,ALIEN_PINK,ALIEN_PINK,_],
+  [_,ALIEN_PINK,ALIEN_PINK,ALIEN_DARK,ALIEN_DARK,ALIEN_DARK,ALIEN_DARK,ALIEN_DARK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,_],
+  [_,_,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,_,_],
+  // body / suit
+  [_,_,ALIEN_SUIT,ALIEN_SUIT,ALIEN_SUIT2,ALIEN_BELLY,ALIEN_BELLY,ALIEN_SUIT2,ALIEN_SUIT,ALIEN_SUIT,_,_],
+  [_,ALIEN_WEAPON,ALIEN_SUIT,ALIEN_SUIT2,ALIEN_BELLY,ALIEN_BELLY,ALIEN_BELLY,ALIEN_BELLY,ALIEN_SUIT2,ALIEN_SUIT,ALIEN_GLOW,_],
+  [_,ALIEN_WDARK,ALIEN_SUIT,ALIEN_SUIT2,ALIEN_SUIT,ALIEN_BELLY,ALIEN_BELLY,ALIEN_SUIT,ALIEN_SUIT2,ALIEN_SUIT,ALIEN_GLOW,_],
+  [_,ALIEN_WDARK,ALIEN_SUIT,ALIEN_SUIT,ALIEN_SUIT2,ALIEN_SUIT,ALIEN_SUIT,ALIEN_SUIT2,ALIEN_SUIT,ALIEN_SUIT,_,_],
+  [_,_,ALIEN_WDARK,ALIEN_SUIT,ALIEN_SUIT,ALIEN_SUIT,ALIEN_SUIT,ALIEN_SUIT,ALIEN_SUIT,ALIEN_WDARK,_,_],
+  // legs
+  [_,_,ALIEN_SUIT,ALIEN_SUIT,_,_,_,_,ALIEN_SUIT,ALIEN_SUIT,_,_],
+  [_,_,ALIEN_SUIT2,ALIEN_SUIT2,_,_,_,_,ALIEN_SUIT2,ALIEN_SUIT2,_,_],
+  // boots
+  [_,_,ALIEN_BOOT,ALIEN_BOOT,ALIEN_BOOT,_,_,ALIEN_BOOT,ALIEN_BOOT,ALIEN_BOOT,_,_],
+];
 
-  const innerEar   = cfg.earInner !== false ? `<div class="c-inner-ear"></div>` : '';
+// ── ENEMY COLOR PALETTES ──
+const W = '#ffffff'; const BK = '#111111'; const GY = '#888888';
+const RD = '#cc0000'; const OR = '#ff6600'; const YL = '#ffcc00';
+const GN = '#006600'; const BL = '#0033cc'; const NV = '#001166';
+const BR = '#8b4513'; const TN = '#d2a679'; const LT = '#f5deb3';
+const PK = '#ff69b4'; const PP = '#6600cc'; const CY = '#00cccc';
+const MG = '#cc00cc';
 
-  return `
-  <div class="c-head" style="background:${cfg.headColor}">
-    <div class="c-ear-l" style="background:${cfg.earColor||cfg.headColor}">${innerEar}</div>
-    <div class="c-ear-r" style="background:${cfg.earColor||cfg.headColor}">${innerEar}</div>
-    ${haloHTML}${laurelHTML}${crownHTML}${romHelmHTML}${hatFlatHTML}${boufHTML}${turbanHTML}
-    <div class="c-helm" style="background:${cfg.helmColor||cfg.bodyColor}">
-      <div class="c-helm-jewel" style="background:${cfg.helmJewel||'#FFD700'}"></div>
-    </div>
-    <div class="c-eyes">
-      <div class="c-eye" style=""><div style="position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:5.5px;height:6.5px;border-radius:50%;background:${cfg.eyeColor||'#2C2C3E'}"></div></div>
-      <div class="c-eye" style=""><div style="position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:5.5px;height:6.5px;border-radius:50%;background:${cfg.eyeColor||'#2C2C3E'}"></div></div>
-    </div>
-    <div class="c-blush-l"></div><div class="c-blush-r"></div>
-    <div class="c-snout" style="background:${cfg.snoutColor||cfg.headColor}">
-      <div class="c-nose" style="background:${cfg.noseColor||'#C0776A'}"></div>
-    </div>
-    ${beardHTML}${moustHTML}
-  </div>
-  <div class="c-body" style="background:${cfg.bodyColor}">
-    ${togaHTML}${capeHTML}${maoColHTML}${furHTML}${armbandHTML}${staffHTML}${tieHTML}${starBadgeHTML}${swordHTML}
-    <div class="c-belly" style="background:${cfg.bellyColor||cfg.bodyColor}"></div>
-    <div class="c-belt" style="background:${cfg.beltColor||'#2C2C3E'}">
-      <div class="c-belt-knot" style="background:${cfg.bellyColor||'rgba(255,255,255,.3)'}"></div>
-    </div>
-    ${robeHTML}
-  </div>
-  <div class="c-legs">
-    <div><div class="c-leg" style="background:${cfg.legColor||cfg.bodyColor}"></div><div class="c-foot" style="background:${cfg.footColor||'#2C2C3E'}"></div></div>
-    <div><div class="c-leg" style="background:${cfg.legColor||cfg.bodyColor}"></div><div class="c-foot" style="background:${cfg.footColor||'#2C2C3E'}"></div></div>
-  </div>`;
+// Build a standard enemy sprite from palette
+function makeEnemy(head, hair, shirt, pants, shoe, hat, hatCol, tie, tieCol, extra) {
+  const HH = hat ? hatCol : _;
+  const HB = hat ? hatCol : _;
+  const TI = tie ? tieCol : _;
+  const SB = '#444'; // sword/bat color
+  const SG = '#222';
+  return [
+    // hat area
+    hat==='cap'   ? [_,_,_,HH,HH,HH,HH,HH,HH,_,_,_] :
+    hat==='tall'  ? [_,_,_,HH,HH,HH,HH,HH,HH,_,_,_] :
+    hat==='crown' ? [_,_,HH,YL,HH,HH,HH,HH,YL,HH,_,_] :
+                    [_,_,_,_,_,_,_,_,_,_,_,_],
+    hat==='tall'  ? [_,_,HH,HH,HH,HH,HH,HH,HH,HH,_,_] :
+    hat==='cap'   ? [_,_,HH,HH,HH,HH,HH,HH,HH,HH,_,_] :
+    hat==='crown' ? [_,HH,HH,HH,HH,HH,HH,HH,HH,HH,HH,_] :
+                    [_,_,hair,hair,hair,hair,hair,hair,hair,hair,_,_],
+    // hair
+    [_,_,hair,hair,hair,hair,hair,hair,hair,hair,_,_],
+    // head row 1
+    [_,_,head,head,head,head,head,head,head,head,_,_],
+    // eyes
+    [_,head,head,BK,BK,head,head,BK,BK,head,head,_],
+    // face mid
+    [_,head,head,head,head,head,head,head,head,head,head,_],
+    // mouth
+    [_,head,head,head,BK,head,head,BK,head,head,head,_],
+    // chin
+    [_,_,head,head,head,head,head,head,head,head,_,_],
+    // neck / collar
+    [_,_,_,shirt,shirt,shirt,shirt,shirt,shirt,_,_,_],
+    // shoulders
+    [_,SB,shirt,shirt,shirt,shirt,shirt,shirt,shirt,shirt,_,_],
+    // body 1
+    [_,SG,shirt,shirt,TI,TI,TI,shirt,shirt,shirt,_,_],
+    // body 2
+    [_,SG,shirt,shirt,TI,TI,TI,shirt,shirt,shirt,_,_],
+    // waist
+    [_,_,shirt,pants,pants,pants,pants,pants,pants,_,_,_],
+    // legs
+    [_,_,_,pants,pants,_,_,pants,pants,_,_,_],
+    [_,_,_,pants,pants,_,_,pants,pants,_,_,_],
+    // boots
+    [_,_,shoe,shoe,shoe,_,_,shoe,shoe,shoe,_,_],
+  ];
 }
 
+// ── SPECIFIC ENEMY SPRITES ──
+
+// Trump - orange tan, blonde combover, red tie, dark suit
+const TRUMP_GRID = makeEnemy(OR,'#ffcc44','#1a1a5a','#1a1a5a','#111','cap','#cc0000',true,RD);
+// Override some rows for better likeness
+TRUMP_GRID[0] = [_,_,'#ffcc44','#ffcc44','#ffcc44','#ffcc44','#ffcc44','#ffcc44','#ffcc44','#ffcc44',_,_]; // combover
+TRUMP_GRID[4][3]='#000'; TRUMP_GRID[4][4]='#000'; TRUMP_GRID[4][7]='#000'; TRUMP_GRID[4][8]='#000';
+
+// Putin - pale, military suit, short hair
+const PUTIN_GRID = makeEnemy(LT,GY,'#2a2a5a','#1a1a3a',BK,null,null,false,null);
+
+// Musk - dark hair, grey tshirt, jeans
+const MUSK_GRID = makeEnemy(LT,'#222222','#888888','#224488','#222',null,null,false,null);
+
+// Kanye - dark skin, sunglasses, all black
+const KANYE_GRID = makeEnemy('#4a2800','#111','#111','#111','#111','cap','#111',false,null);
+KANYE_GRID[4] = [_,'#4a2800','#4a2800','#111111','#111111','#4a2800','#4a2800','#111111','#111111','#4a2800','#4a2800',_]; // sunglasses
+
+// Kim K - tan skin, white outfit, black hair
+const KIMK_GRID = makeEnemy(TN,'#111','#ffffff','#ffffff','#111',null,null,false,null);
+KIMK_GRID[1] = [_,_,'#111','#111','#111','#111','#111','#111','#111','#111',_,_]; // long black hair
+
+// Madonna - blonde, red outfit
+const MADONNA_GRID = makeEnemy(LT,'#ffcc00',RD,RD,'#222',null,null,false,null);
+MADONNA_GRID[1] = [_,_,'#ffcc00','#ffcc00','#ffcc00','#ffcc00','#ffcc00','#ffcc00','#ffcc00','#ffcc00',_,_];
+
+// Taylor Swift - blonde, red dress
+const TAYLOR_GRID = makeEnemy(LT,'#ffdd44','#cc0000','#cc0000','#111',null,null,false,null);
+
+// Justin Bieber - brown hair, hoodie
+const BIEBER_GRID = makeEnemy(LT,'#8b4513','#3399ff','#1a1a5a','#111','cap','#3399ff',false,null);
+
+// Cristiano - tan, blue jersey
+const CR7_GRID = makeEnemy(TN,'#222','#0044cc','#0044cc','#000',null,null,false,null);
+// jersey number
+CR7_GRID[10][4]='#fff'; CR7_GRID[10][5]='#fff'; CR7_GRID[10][6]='#fff';
+
+// Messi - tan, white+blue jersey
+const MESSI_GRID = makeEnemy(TN,'#333','#ffffff','#003399','#222',null,null,false,null);
+
+// LeBron - dark skin, purple jersey
+const LEBRON_GRID = makeEnemy('#4a2800','#222','#552288','#552288','#fff',null,null,false,null);
+
+// Beyoncé - brown skin, gold outfit
+const BEYONCE_GRID = makeEnemy('#7a4a00',YL,'#cc9900',YL,'#111',null,null,false,null);
+BEYONCE_GRID[1] = [_,_,'#cc7700','#cc7700','#cc7700','#cc7700','#cc7700','#cc7700','#cc7700','#cc7700',_,_]; // long hair
+
+// Elon (enemy 2) - same as musk but red
+const ELON2_GRID = makeEnemy(LT,'#333',RD,'#222','#111',null,null,false,null);
+
+// Jeff Bezos - bald, blue suit
+const BEZOS_GRID = makeEnemy(LT,LT,'#003399','#001166',BK,null,null,true,YL);
+BEZOS_GRID[1] = [_,_,LT,LT,LT,LT,LT,LT,LT,LT,_,_]; // bald = same as skin
+
+// Boris Johnson - blonde chaos, blue suit
+const BORIS_GRID = makeEnemy(LT,'#ffee44','#003399','#003399',BK,null,null,true,RD);
+BORIS_GRID[0] = [_,_,'#ffee44','#ffee44','#ffee44','#ffee44','#ffee44','#ffee44','#ffee44','#ffee44',_,_]; // messy hair
+BORIS_GRID[1][3]='#ffee44'; BORIS_GRID[1][8]='#ffee44'; // extra messy
+
+// Kim Jong Un - dark hair, dark suit
+const KIM_GRID = makeEnemy(LT,'#111111','#111111','#111111',BK,'cap','#111111',false,null);
+
+// Mariah Carey - skin, gold dress
+const MARIAH_GRID = makeEnemy(TN,'#111','#cc9900','#cc9900','#111',null,null,false,null);
+MARIAH_GRID[1] = [_,_,'#111','#111','#111','#111','#111','#111','#111','#111',_,_]; // long dark hair
+
+// Kylie Jenner - tan, pink outfit
+const KYLIE_GRID = makeEnemy(TN,'#111',PK,PK,'#111',null,null,false,null);
+
+// Jake Paul - blonde, yellow merch
+const JAKE_GRID = makeEnemy(LT,'#ffcc00','#ffcc00','#1a1a5a','#111','cap','#ffcc00',false,null);
+
+// Nicki Minaj - bright pink hair, pink outfit
+const NICKI_GRID = makeEnemy(TN,MG,MG,'#111','#111',null,null,false,null);
+NICKI_GRID[0] = [_,_,MG,MG,MG,MG,MG,MG,MG,MG,_,_];
+NICKI_GRID[1] = [_,_,MG,MG,MG,MG,MG,MG,MG,MG,_,_];
+
+// Andrew Tate - dark skin, sunglasses, shaved head
+const TATE_GRID = makeEnemy('#5a3300','#5a3300','#cc0000','#111',BK,null,null,false,null);
+TATE_GRID[4] = [_,'#5a3300','#5a3300','#222','#555','#5a3300','#5a3300','#555','#222','#5a3300','#5a3300',_]; // sunglasses
+
+// Volodymyr Zelensky - olive skin, military green
+const ZELENSKY_GRID = makeEnemy(LT,'#333','#3a4a2a','#2a3a1a','#222',null,null,false,null);
+
+// Greta Thunberg - fair, blue jacket, braids
+const GRETA_GRID = makeEnemy(LT,'#8b4513','#003399','#001166','#222',null,null,false,null);
+GRETA_GRID[1] = [_,_,'#8b4513','#222','#8b4513','#8b4513','#8b4513','#8b4513','#222','#8b4513',_,_]; // braids
+
+// Dwayne Johnson - dark skin, black shirt, bald
+const ROCK_GRID = makeEnemy('#7a4a00','#7a4a00','#111','#111','#111',null,null,false,null);
+
+// Harry Styles - fair, floral shirt
+const HARRY_GRID = makeEnemy(LT,'#6a3a00','#ff6699','#001166','#222',null,null,false,null);
+HARRY_GRID[9][3]=PK; HARRY_GRID[9][4]=YL; HARRY_GRID[10][5]=GN;
+
+// Mark Zuckerberg - fair, grey tshirt, dark hair
+const ZUCK_GRID = makeEnemy(LT,'#333','#888','#224488','#222',null,null,false,null);
+
+// Chaos villain - rainbow glitch
+const CHAOS_GRID = [
+  [_,_,MG,MG,CY,CY,YL,YL,MG,MG,_,_],
+  [_,MG,CY,CY,YL,YL,CY,CY,YL,MG,MG,_],
+  [_,CY,YL,MG,CY,YL,MG,CY,YL,MG,CY,_],
+  [_,YL,BK,BK,MG,CY,YL,BK,BK,MG,YL,_],
+  [_,MG,RD,RD,BK,BK,BK,BK,RD,RD,MG,_],
+  [_,CY,MG,MG,CY,BK,BK,CY,MG,MG,CY,_],
+  [_,YL,MG,BK,MG,MG,MG,MG,BK,MG,YL,_],
+  [_,_,CY,MG,YL,CY,MG,YL,MG,CY,_,_],
+  [_,BK,MG,CY,YL,MG,CY,YL,CY,MG,BK,_],
+  [MG,RD,CY,YL,MG,CY,YL,MG,CY,YL,RD,MG],
+  [CY,MG,YL,CY,MG,YL,CY,MG,YL,CY,MG,CY],
+  [YL,CY,MG,YL,CY,MG,YL,CY,MG,YL,CY,YL],
+  [_,BK,CY,MG,YL,BK,BK,YL,MG,CY,BK,_],
+  [_,_,MG,MG,_,_,_,_,MG,MG,_,_],
+  [_,_,CY,CY,_,_,_,_,CY,CY,_,_],
+  [_,BK,BK,MG,_,_,_,_,MG,BK,BK,_],
+];
+
 // ══════════════════════════════════════════════
-//  JESUS (player) — always the same
+//  ENEMY ROSTER — Modern Famous People
 // ══════════════════════════════════════════════
-const JESUS_CFG = {
-  headColor:'#D4A47A', earColor:'#C8966A',
-  bodyColor:'#FFFFFF', bellyColor:'#E8E8E8',
-  beltColor:'#D4A020', legColor:'#C8D4E8', footColor:'#8B6914',
-  eyeColor:'#3A2010', noseColor:'#C08060', snoutColor:'#C8906A',
-  helmColor:'#C8D4E8', helmJewel:'#D4A020',
-  halo:true,
-  beard:'#7A5020',
-  earInner:false,
-  robe:true,
-  toga:'rgba(200,210,232,0.6)',
-  swordGuard:'#D4A020',
+const BG = {
+  usa:   {sky:'sky-usa',  gnd:'gnd-usa',  grs:'grs-usa'},
+  uk:    {sky:'sky-uk',   gnd:'gnd-uk',   grs:'grs-uk'},
+  pop:   {sky:'sky-pop',  gnd:'gnd-pop',  grs:'grs-pop'},
+  sport: {sky:'sky-sport',gnd:'gnd-sport',grs:'grs-sport'},
+  film:  {sky:'sky-film', gnd:'gnd-film', grs:'grs-film'},
+  night: {sky:'sky-night',gnd:'gnd-night',grs:'grs-night'},
+  chaos: {sky:'sky-chaos',gnd:'gnd-chaos',grs:'grs-chaos'},
 };
 
-// ══════════════════════════════════════════════
-//  ENEMY ROSTER — historical villains
-// ══════════════════════════════════════════════
 const ENEMIES = [
-  // ── WAVE 0 (0–2 kills) ──
-  {
-    name:'Julius Caesar',
-    emoji:'🏛️',
-    bg:{sky:'sky-rome',gnd:'gnd-rome',grs:'grs-rome'},
-    scene:'colosseum',
-    cfg:{
-      headColor:'#D4B896', earColor:'#C8A880',
-      bodyColor:'#8B0000', bellyColor:'#AA2020',
-      beltColor:'#C0A020', legColor:'#8B0000', footColor:'#5A3010',
-      eyeColor:'#2C1A0A', noseColor:'#B08060', snoutColor:'#C0A080',
-      helmColor:'#8B0000', helmJewel:'#FFD700',
-      romanHelmet:'#CC4444',
-      laurel:true, toga:'rgba(255,255,255,0.5)',
-      cape:'#8B0000', earInner:false,
-    }
-  },
-  {
-    name:'Caligula',
-    emoji:'🏛️',
-    bg:{sky:'sky-rome',gnd:'gnd-rome',grs:'grs-rome'},
-    scene:'colosseum',
-    cfg:{
-      headColor:'#D0A87A', earColor:'#C09868',
-      bodyColor:'#4A0080', bellyColor:'#6A10A0',
-      beltColor:'#FFD700', legColor:'#4A0080', footColor:'#2A0050',
-      eyeColor:'#3A0A10', noseColor:'#B07850', snoutColor:'#C09878',
-      helmColor:'#4A0080', helmJewel:'#FF4444',
-      laurel:true, toga:'rgba(255,215,0,0.4)',
-      cape:'#6A00B0', earInner:false,
-    }
-  },
-  {
-    name:'Cleopatra',
-    emoji:'🐍',
-    bg:{sky:'sky-egypt',gnd:'gnd-egypt',grs:'grs-egypt'},
-    scene:'pyramid',
-    cfg:{
-      headColor:'#C8946A', earColor:'#B88458',
-      bodyColor:'#006080', bellyColor:'#00A0B0',
-      beltColor:'#FFD700', legColor:'#006080', footColor:'#003040',
-      eyeColor:'#000080', noseColor:'#A07050', snoutColor:'#B88060',
-      helmColor:'#006080', helmJewel:'#FF4444',
-      crown:'#FFD700', earInner:false,
-      armband:'#FFD700',
-    }
-  },
-  // ── WAVE 1 (3–5 kills) ──
-  {
-    name:'Genghis Khan',
-    emoji:'🏹',
-    bg:{sky:'sky-mongolia',gnd:'gnd-mongolia',grs:'grs-mongolia'},
-    scene:'',
-    cfg:{
-      headColor:'#C8A47A', earColor:'#B89468',
-      bodyColor:'#4A3010', bellyColor:'#6A5020',
-      beltColor:'#8B6914', legColor:'#4A3010', footColor:'#2A1A08',
-      eyeColor:'#1A0A00', noseColor:'#9A7050', snoutColor:'#B89068',
-      helmColor:'#2A1A08', helmJewel:'#C8A020',
-      bouffant:'#1A0A00',
-      fur:'#6A5040', earInner:false,
-    }
-  },
-  {
-    name:'Attila the Hun',
-    emoji:'⚔️',
-    bg:{sky:'sky-mongolia',gnd:'gnd-mongolia',grs:'grs-mongolia'},
-    scene:'',
-    cfg:{
-      headColor:'#C09060', earColor:'#B08050',
-      bodyColor:'#3A2800', bellyColor:'#5A4010',
-      beltColor:'#7A5A14', legColor:'#3A2800', footColor:'#1A1000',
-      eyeColor:'#1A0800', noseColor:'#906040', snoutColor:'#A88060',
-      helmColor:'#5A4010', helmJewel:'#CC8010',
-      moustasche:'#1A0800', fur:'#5A4030', earInner:false,
-    }
-  },
-  {
-    name:'Napoleon Bonaparte',
-    emoji:'🇫🇷',
-    bg:{sky:'sky-france',gnd:'gnd-france',grs:'grs-france'},
-    scene:'eiffel',
-    cfg:{
-      headColor:'#D4B090', earColor:'#C4A080',
-      bodyColor:'#0A1F5A', bellyColor:'#1A3A8A',
-      beltColor:'#FFD700', legColor:'#F0F0F0', footColor:'#1A1A1A',
-      eyeColor:'#1A1A2A', noseColor:'#B08878', snoutColor:'#C4A888',
-      helmColor:'#0A1F5A', helmJewel:'#FFD700',
-      hatFlat:'#1A1A1A', hatTop:'#1A1A1A',
-      cape:'#0A1F5A', earInner:false,
-    }
-  },
-  // ── WAVE 2 (6–9 kills) ──
-  {
-    name:'Adolf Hitler',
-    emoji:'🇩🇪',
-    bg:{sky:'sky-germany',gnd:'gnd-germany',grs:'grs-germany'},
-    scene:'',
-    cfg:{
-      headColor:'#D0B090', earColor:'#C0A080',
-      bodyColor:'#3A3A3A', bellyColor:'#555555',
-      beltColor:'#1A1A1A', legColor:'#3A3A3A', footColor:'#1A1A1A',
-      eyeColor:'#2040A0', noseColor:'#A08878', snoutColor:'#C0A888',
-      helmColor:'#2A2A2A', helmJewel:'#CC4444',
-      hatFlat:'#2A2A2A', hatTop:'#2A2A2A',
-      moustasche:'#1A1A1A', earInner:false,
-    }
-  },
-  {
-    name:'Joseph Stalin',
-    emoji:'🇷🇺',
-    bg:{sky:'sky-russia',gnd:'gnd-russia',grs:'grs-russia'},
-    scene:'kremlin',
-    cfg:{
-      headColor:'#C8A880', earColor:'#B89870',
-      bodyColor:'#3A3A50', bellyColor:'#5A5A70',
-      beltColor:'#CC4444', legColor:'#3A3A50', footColor:'#1A1A28',
-      eyeColor:'#1A1020', noseColor:'#9A7858', snoutColor:'#B89870',
-      helmColor:'#3A3A50', helmJewel:'#CC4444',
-      bouffant:'#2A1A18', moustasche:'#2A1A18',
-      starBadge:true, earInner:false,
-    }
-  },
-  {
-    name:'Saddam Hussein',
-    emoji:'🇮🇶',
-    bg:{sky:'sky-iraq',gnd:'gnd-iraq',grs:'grs-iraq'},
-    scene:'',
-    cfg:{
-      headColor:'#C8A060', earColor:'#B89050',
-      bodyColor:'#3A5A1A', bellyColor:'#5A7A2A',
-      beltColor:'#2A1A00', legColor:'#3A5A1A', footColor:'#1A2A08',
-      eyeColor:'#1A0800', noseColor:'#906040', snoutColor:'#A88060',
-      helmColor:'#3A5A1A', helmJewel:'#CC8010',
-      moustasche:'#1A0800', turban:'#2A4A10', earInner:false,
-    }
-  },
-  // ── WAVE 3 (10–14 kills) ──
-  {
-    name:'Mao Zedong',
-    emoji:'🇨🇳',
-    bg:{sky:'sky-china',gnd:'gnd-china',grs:'grs-china'},
-    scene:'',
-    cfg:{
-      headColor:'#C8A070', earColor:'#B89060',
-      bodyColor:'#CC2222', bellyColor:'#EE4444',
-      beltColor:'#880000', legColor:'#CC2222', footColor:'#440000',
-      eyeColor:'#1A0A00', noseColor:'#906040', snoutColor:'#A88060',
-      helmColor:'#AA1A1A', helmJewel:'#FFD700',
-      bouffant:'#1A0A00', maoCollar:'#BB1A1A',
-      starBadge:true, earInner:false,
-    }
-  },
-  {
-    name:'Kim Jong-un',
-    emoji:'🇰🇵',
-    bg:{sky:'sky-northkorea',gnd:'gnd-northkorea',grs:'grs-northkorea'},
-    scene:'',
-    cfg:{
-      headColor:'#D4B080', earColor:'#C4A070',
-      bodyColor:'#1A1A2A', bellyColor:'#2A2A3A',
-      beltColor:'#CC4444', legColor:'#1A1A2A', footColor:'#0A0A18',
-      eyeColor:'#1A0A00', noseColor:'#A08060', snoutColor:'#B89070',
-      helmColor:'#1A1A2A', helmJewel:'#CC4444',
-      bouffant:'#1A0A00', maoCollar:'#1A1A2A',
-      starBadge:true, earInner:false,
-    }
-  },
-  {
-    name:'Hugo Chávez',
-    emoji:'🇻🇪',
-    bg:{sky:'sky-venezuela',gnd:'gnd-venezuela',grs:'grs-venezuela'},
-    scene:'',
-    cfg:{
-      headColor:'#8B4513', earColor:'#7A3A08',
-      bodyColor:'#CC0000', bellyColor:'#EE2222',
-      beltColor:'#003A7A', legColor:'#CC0000', footColor:'#440000',
-      eyeColor:'#1A0A00', noseColor:'#703010', snoutColor:'#8B4513',
-      helmColor:'#AA0000', helmJewel:'#FFD700',
-      bouffant:'#3A1A08', starBadge:true, earInner:false,
-    }
-  },
-  // ── WAVE 4 (15+ kills) — CHAOS MIX ──
-  {
-    name:'All of them at once!',
-    emoji:'🌈',
-    bg:{sky:'sky-rainbow',gnd:'gnd-rainbow',grs:'grs-rainbow'},
-    scene:'',
-    cfg:{
-      headColor:'#C77DFF', earColor:'#FF8FAB',
-      bodyColor:'#FF4757', bellyColor:'#FF8FAB',
-      beltColor:'#FFD700', legColor:'#4D96FF', footColor:'#C77DFF',
-      eyeColor:'#FFD700', noseColor:'#FF4757', snoutColor:'#C77DFF',
-      helmColor:'#4D96FF', helmJewel:'#FF4757',
-      crown:'#FFD700', halo:false, earInner:false,
-      bouffant:'#FFD700', cape:'#4D96FF',
-    }
-  },
+  // POLITICIANS
+  {name:'Donald Trump',     emoji:'🇺🇸', bg:BG.usa,   grid:TRUMP_GRID},
+  {name:'Vladimir Putin',   emoji:'🇷🇺', bg:BG.night, grid:PUTIN_GRID},
+  {name:'Boris Johnson',    emoji:'🇬🇧', bg:BG.uk,    grid:BORIS_GRID},
+  {name:'Kim Jong-un',      emoji:'🇰🇵', bg:BG.night, grid:KIM_GRID},
+  {name:'Zelensky',         emoji:'🇺🇦', bg:BG.night, grid:ZELENSKY_GRID},
+  // TECH BILLIONAIRES
+  {name:'Elon Musk',        emoji:'🚀', bg:BG.usa,   grid:MUSK_GRID},
+  {name:'Jeff Bezos',       emoji:'📦', bg:BG.usa,   grid:BEZOS_GRID},
+  {name:'Mark Zuckerberg',  emoji:'🤖', bg:BG.usa,   grid:ZUCK_GRID},
+  {name:'Elon (Redux)',     emoji:'🔥', bg:BG.chaos, grid:ELON2_GRID},
+  // POP STARS & MUSIC
+  {name:'Kanye West',       emoji:'🎤', bg:BG.pop,   grid:KANYE_GRID},
+  {name:'Taylor Swift',     emoji:'🎸', bg:BG.pop,   grid:TAYLOR_GRID},
+  {name:'Justin Bieber',    emoji:'🎵', bg:BG.pop,   grid:BIEBER_GRID},
+  {name:'Madonna',          emoji:'💃', bg:BG.pop,   grid:MADONNA_GRID},
+  {name:'Beyoncé',          emoji:'👑', bg:BG.pop,   grid:BEYONCE_GRID},
+  {name:'Nicki Minaj',      emoji:'🎀', bg:BG.pop,   grid:NICKI_GRID},
+  {name:'Mariah Carey',     emoji:'🎄', bg:BG.pop,   grid:MARIAH_GRID},
+  {name:'Harry Styles',     emoji:'🌸', bg:BG.pop,   grid:HARRY_GRID},
+  // SPORTS
+  {name:'Cristiano Ronaldo',emoji:'⚽', bg:BG.sport, grid:CR7_GRID},
+  {name:'Lionel Messi',     emoji:'⚽', bg:BG.sport, grid:MESSI_GRID},
+  {name:'LeBron James',     emoji:'🏀', bg:BG.sport, grid:LEBRON_GRID},
+  {name:'Dwayne Johnson',   emoji:'💪', bg:BG.sport, grid:ROCK_GRID},
+  // REALITY / SOCIAL MEDIA
+  {name:'Kim Kardashian',   emoji:'📸', bg:BG.pop,   grid:KIMK_GRID},
+  {name:'Kylie Jenner',     emoji:'💄', bg:BG.pop,   grid:KYLIE_GRID},
+  {name:'Jake Paul',        emoji:'🥊', bg:BG.usa,   grid:JAKE_GRID},
+  {name:'Andrew Tate',      emoji:'🚗', bg:BG.film,  grid:TATE_GRID},
+  // ACTIVISTS
+  {name:'Greta Thunberg',   emoji:'🌍', bg:BG.uk,    grid:GRETA_GRID},
+  // FILM
+  {name:'The Hollywood Ego',emoji:'🎬', bg:BG.film,  grid:makeEnemy(LT,'#222',YL,BK,'#222','tall','#111111',true,YL)},
+  {name:'The Influencer',   emoji:'📱', bg:BG.pop,   grid:makeEnemy(TN,'#ff44aa',MG,PK,'#fff',null,null,false,null)},
+  {name:'The Billionaire',  emoji:'💰', bg:BG.usa,   grid:makeEnemy(LT,GY,'#001166','#111',BK,null,null,true,YL)},
+  // FINAL BOSSES
+  {name:'THE ALGORITHM',    emoji:'🤖', bg:BG.chaos, grid:CHAOS_GRID},
+  {name:'CAPITALISM ITSELF',emoji:'💸', bg:BG.chaos, grid:CHAOS_GRID},
+  {name:'YOUR EGO',         emoji:'🪞', bg:BG.chaos, grid:CHAOS_GRID},
+  // Repeating chaos pack (indices 32–99)
+  ...Array.from({length:68}, (_, i) => {
+    const names = [
+      {name:'The Paparazzi',     emoji:'📷', bg:BG.film},
+      {name:'The Spin Doctor',   emoji:'🌀', bg:BG.usa},
+      {name:'The Lobbyist',      emoji:'💼', bg:BG.usa},
+      {name:'The Clickbaiter',   emoji:'😱', bg:BG.pop},
+      {name:'The Reply Guy',     emoji:'🗣️', bg:BG.pop},
+      {name:'The Life Coach',    emoji:'✨', bg:BG.film},
+      {name:'The NFT Bro',       emoji:'🐒', bg:BG.chaos},
+      {name:'The Crypto King',   emoji:'🪙', bg:BG.chaos},
+      {name:'The Mansplainer',   emoji:'👆', bg:BG.usa},
+      {name:'The Party Leader',  emoji:'🎊', bg:BG.uk},
+    ];
+    const pick = names[i % names.length];
+    const grids = [TRUMP_GRID, PUTIN_GRID, MUSK_GRID, KANYE_GRID, CR7_GRID, BEZOS_GRID, KIMK_GRID, TATE_GRID, CHAOS_GRID, ROCK_GRID];
+    return {...pick, grid: grids[i % grids.length]};
+  }),
 ];
 
 // ══════════════════════════════════════════════
@@ -687,19 +693,13 @@ let killCount = 0;
 let REACTION_WINDOW = 700;
 let waitTimer  = null;
 let reactTimer = null;
-let currentEnemyIdx = 0;
-let defeatedList = []; // tracks enemies beaten this run
+let defeatedList = [];
 
 // ── DOM ──
 const skyEl      = document.getElementById('sky');
 const groundEl   = document.getElementById('ground');
 const grassEl    = document.getElementById('grass');
-const pyramidEl  = document.getElementById('pyramid');
-const colosseumEl= document.getElementById('colosseum');
-const kremlinEl  = document.getElementById('kremlin');
-const eiffelEl   = document.getElementById('eiffel');
 const starsEl    = document.getElementById('stars');
-const sparklesEl = document.getElementById('sparkles');
 const cl1El      = document.getElementById('cl1');
 const cl2El      = document.getElementById('cl2');
 const bannerEl   = document.getElementById('enemy-banner');
@@ -714,9 +714,9 @@ const timerWrap  = document.getElementById('timer-wrap');
 const timerBar   = document.getElementById('timer-bar');
 const kcEl       = document.getElementById('kill-badge');
 const kcNum      = document.getElementById('kc');
-const tapHint    = document.getElementById('tap-hint');
 const flashEl    = document.getElementById('flash');
 const runBlock   = document.getElementById('run-block');
+const windContainer = document.getElementById('wind-container');
 const scrLand    = document.getElementById('scr-land');
 const scrGame    = document.getElementById('scr-game');
 const scrEnd     = document.getElementById('scr-end');
@@ -730,339 +730,314 @@ function showScreen(n) {
   scrGame.classList.toggle('hidden', n !== 'game');
   scrEnd.classList.toggle('hidden',  n !== 'end');
 }
-
-function doFlash() {
-  flashEl.classList.add('go');
-  setTimeout(() => flashEl.classList.remove('go'), 130);
-}
+function doFlash() { flashEl.classList.add('go'); setTimeout(()=>flashEl.classList.remove('go'),130); }
 
 function confetti() {
-  const cols = ['#FFD700','#FF4757','#2ECC71','#9B59B6','#3498DB','#F39C12','#FF8FAB','#C77DFF'];
-  for (let i = 0; i < 44; i++) {
-    const el = document.createElement('div');
-    el.className = 'conf';
-    el.style.cssText = `left:${Math.random()*100}vw;top:-20px;width:${8+Math.random()*9}px;height:${8+Math.random()*9}px;background:${cols[i%cols.length]};border-radius:${Math.random()>.5?'50%':'3px'};animation-duration:${1.4+Math.random()*1.8}s;animation-delay:${Math.random()*.8}s;`;
+  const cols=['#44cc66','#dd2244','#ddaa44','#55aacc','#aa55cc','#cccccc'];
+  for(let i=0;i<40;i++){
+    const el=document.createElement('div'); el.className='conf';
+    const sz = [4,6,8][Math.floor(Math.random()*3)];
+    el.style.cssText=`left:${Math.random()*100}vw;top:-20px;width:${sz}px;height:${sz}px;background:${cols[i%cols.length]};animation-duration:${1.3+Math.random()*1.6}s;animation-delay:${Math.random()*.7}s;`;
     document.body.appendChild(el);
-    setTimeout(() => el.remove(), 3600);
+    setTimeout(()=>el.remove(),3500);
   }
 }
 
 function buildStars() {
-  starsEl.innerHTML = '';
-  for (let i = 0; i < 36; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    const sz = 2 + Math.random() * 3;
-    s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*46}%;left:${Math.random()*100}%;animation-delay:${Math.random()*2.5}s;animation-duration:${1.5+Math.random()*2}s;`;
+  starsEl.innerHTML='';
+  for(let i=0;i<50;i++){
+    const s=document.createElement('div');
+    const big=Math.random()>.8;
+    s.className=`star star-${big?'m':'s'}`;
+    s.style.cssText=`top:${Math.random()*55}%;left:${Math.random()*100}%;opacity:${0.3+Math.random()*.7};`;
     starsEl.appendChild(s);
   }
 }
 
-function buildSparkles() {
-  sparklesEl.innerHTML = '';
-  const ems = ['✨','🌟','💫','🌈','💥','⭐','⚡'];
-  for (let i = 0; i < 14; i++) {
-    const s = document.createElement('div');
-    s.className = 'sparkle';
-    s.textContent = ems[Math.floor(Math.random()*ems.length)];
-    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*70}%;font-size:${18+Math.random()*24}px;animation-delay:${Math.random()*4}s;animation-duration:${2.5+Math.random()*3}s;`;
-    sparklesEl.appendChild(s);
-  }
-}
-
-// ── Background & scene setup ──
+// ── Background ──
 function applyBackground(enemy) {
-  const bg = enemy.bg;
-  skyEl.className    = bg.sky;
-  groundEl.className = bg.gnd;
-  grassEl.className  = bg.grs;
-
-  // Hide all scene elements
-  pyramidEl.style.opacity  = '0';
-  colosseumEl.style.opacity= '0';
-  kremlinEl.style.opacity  = '0';
-  eiffelEl.style.opacity   = '0';
-  sparklesEl.style.opacity = '0';
-  starsEl.style.opacity    = '0';
-  cl1El.style.opacity = cl2El.style.opacity = '1';
-
-  // Show specific scene
-  if (enemy.scene === 'pyramid')    pyramidEl.style.opacity   = '1';
-  if (enemy.scene === 'colosseum')  colosseumEl.style.opacity = '1';
-  if (enemy.scene === 'kremlin')    kremlinEl.style.opacity   = '1';
-  if (enemy.scene === 'eiffel')     eiffelEl.style.opacity    = '1';
-
-  // Rainbow = sparkles
-  if (bg.sky === 'sky-rainbow') {
-    sparklesEl.style.opacity = '1';
-    buildSparkles();
-    cl1El.style.opacity = cl2El.style.opacity = '0';
-  }
-
-  // Night/dark skies = stars
-  if (['sky-germany','sky-russia','sky-northkorea','sky-china','sky-france'].includes(bg.sky)) {
-    buildStars();
-    starsEl.style.opacity = '0.6';
-  }
+  const bg=enemy.bg;
+  skyEl.className=bg.sky; groundEl.className=bg.gnd; grassEl.className=bg.grs;
+  // stars only in dark modes
+  starsEl.style.opacity=['sky-night','sky-usa','sky-uk','sky-film'].includes(bg.sky)?'1':'0';
+  cl1El.style.opacity=cl2El.style.opacity=['sky-chaos'].includes(bg.sky)?'0':'0.7';
 }
 
-// ── Pick enemy ──
-function getEnemy() {
-  // Last pool repeats for crazy chaos
-  const maxIdx = ENEMIES.length - 1;
-  if (killCount >= 15) return ENEMIES[maxIdx];
-  // Otherwise use kill count to progress through the roster (with some repeat)
-  const idx = Math.min(killCount, maxIdx);
-  return ENEMIES[idx];
-}
+// ── Characters ──
+function getEnemy() { return ENEMIES[Math.min(killCount, ENEMIES.length-1)]; }
+function getPlayerScale() { return Math.min(1.0 + killCount*0.025, 1.25); }
+function getEnemyScale(ms) { const t=(ms-300)/700; return 0.55+t*1.5; }
 
-// ── Sizing ──
-function getPlayerScale() { return Math.min(1.0 + killCount * 0.03, 1.3); }
-function getEnemyScale(ms) {
-  const t = (ms - 300) / 700;
-  return 0.55 + t * 1.5;
-}
-
-// ══════════════════════════════════════════════
-//  RENDER CHARACTERS
-// ══════════════════════════════════════════════
 function renderChars() {
-  // Player
-  innerL.innerHTML = buildChar(JESUS_CFG);
   const ps = getPlayerScale();
+  innerL.innerHTML = renderPixels(ALIEN_GRID);
   charL.style.transform = `scale(${ps})`;
   charL.style.transformOrigin = 'bottom center';
   shadowL.style.transform = `scaleX(${ps})`;
 
-  // Enemy
   const enemy = getEnemy();
-  currentEnemyIdx = ENEMIES.indexOf(enemy);
-  innerR.innerHTML = buildChar(enemy.cfg);
+  innerR.innerHTML = renderPixels(enemy.grid);
   charR.style.transform = 'scaleX(-1)';
   charR.style.transformOrigin = 'bottom center';
   shadowR.style.transform = '';
+  charL.className='char-wrap idle-l';
+  charR.className='char-wrap idle-r';
 
-  charL.className = 'char-wrap idle-l';
-  charR.className = 'char-wrap idle-r';
-
-  // Show banner
-  bannerEl.textContent = `${enemy.emoji} ${enemy.name}`;
+  bannerEl.textContent = `${enemy.emoji} ${enemy.name.toUpperCase()} ${enemy.emoji}`;
   bannerEl.classList.add('show');
-  setTimeout(() => bannerEl.classList.remove('show'), 2200);
+  setTimeout(()=>bannerEl.classList.remove('show'), 2400);
 
-  // Apply bg
   applyBackground(enemy);
 }
 
 function applyEnemyScale() {
-  const sc = getEnemyScale(REACTION_WINDOW);
-  charR.style.transition = 'transform 0.42s cubic-bezier(.34,1.56,.64,1)';
-  charR.style.transform  = `scaleX(-${sc}) scaleY(${sc})`;
-  shadowR.style.transform = `scaleX(${sc * 0.8})`;
-
-  const t = (REACTION_WINDOW - 300) / 700;
-  if (t >= 0.66)      tapHint.textContent = '😰 HUGE villain — breathe, then strike!';
-  else if (t >= 0.33) tapHint.textContent = '😤 Medium villain — stay sharp!';
-  else                tapHint.textContent = '💀 TINY villain — blink and you lose!';
+  const sc=getEnemyScale(REACTION_WINDOW);
+  charR.style.transition='transform 0.42s steps(6)';
+  charR.style.transform=`scaleX(-${sc}) scaleY(${sc})`;
+  shadowR.style.transform=`scaleX(${sc*.8})`;
 }
-
 function resetEnemyScale() {
-  charR.style.transition = '';
-  charR.style.transform  = 'scaleX(-1)';
-  shadowR.style.transform = '';
+  charR.style.transition=''; charR.style.transform='scaleX(-1)'; shadowR.style.transform='';
 }
 
-// ── Timer bar ──
+// ── Timer ──
 function startTimer() {
-  timerBar.style.transition = 'none';
-  timerBar.style.width = '100%';
+  timerBar.style.transition='none'; timerBar.style.width='100%';
   timerWrap.classList.add('show');
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    timerBar.style.transition = `width ${REACTION_WINDOW}ms linear`;
-    timerBar.style.width = '0%';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    timerBar.style.transition=`width ${REACTION_WINDOW}ms linear`;
+    timerBar.style.width='0%';
   }));
 }
 function stopTimer() {
   timerWrap.classList.remove('show');
-  timerBar.style.transition = 'none';
-  timerBar.style.width = '100%';
+  timerBar.style.transition='none'; timerBar.style.width='100%';
+}
+
+// ── Wind ──
+let windInterval=null;
+function startWind() {
+  stopWind();
+  function spawnWind() {
+    const el=document.createElement('div'); el.className='wind-particle';
+    const top=15+Math.random()*75;
+    const w=60+Math.random()*180;
+    const h=2+Math.random()*3;
+    const dur=0.7+Math.random()*1.2;
+    const delay=Math.random()*.5;
+    el.style.cssText=`top:${top}%;left:0;width:${w}px;height:${h}px;animation-duration:${dur}s;animation-delay:${delay}s;`;
+    windContainer.appendChild(el);
+    setTimeout(()=>el.remove(),(dur+delay+.2)*1000);
+  }
+  spawnWind(); windInterval=setInterval(spawnWind,140);
+}
+function stopWind() { clearInterval(windInterval); windInterval=null; windContainer.innerHTML=''; }
+
+// ── Percentile ──
+function getPercentile(n) {
+  if(n>=50) return{cls:'pct-top',  msg:'TOP 0.1% ★ LEGEND STATUS'};
+  if(n>=30) return{cls:'pct-top',  msg:'TOP 1% ★ ELITE HUNTER'};
+  if(n>=20) return{cls:'pct-top',  msg:'TOP 5% ★ OUTSTANDING'};
+  if(n>=15) return{cls:'pct-good', msg:'TOP 10% ★ VERY IMPRESSIVE'};
+  if(n>=10) return{cls:'pct-good', msg:'TOP 25% ★ ABOVE AVERAGE'};
+  if(n>=6)  return{cls:'pct-mid',  msg:'TOP 50% - ROOM TO GROW'};
+  if(n>=3)  return{cls:'pct-mid',  msg:'BOTTOM 50% - KEEP TRYING'};
+  if(n>=1)  return{cls:'pct-low',  msg:'BOTTOM 25% - TRY AGAIN'};
+  return          {cls:'pct-low',  msg:'BOTTOM 10% - FIRST BLOOD'};
+}
+
+// ── Satirical quotes ──
+const QUOTES=[
+  "You're not fighting evil. You're finding yourself.",
+  "This isn't a game. It's your life's purpose.",
+  "The meaning of life? Tap faster than death.",
+  "You didn't defeat a villain. You defeated your ego.",
+  "Life is a duel. You just got a point.",
+  "Every sword swing is a step toward enlightenment.",
+  "You weren't born to scroll. You were born for this.",
+  "This is the hero's journey. The hero has a phone.",
+  "Death is certain. Bad reaction time is optional.",
+  "You didn't win a fight. You won a feeling.",
+  "The universe asked your purpose. You answered.",
+  "Meaning isn't found. It's tapped at the right moment.",
+  "Life has no manual. But this game does. Sort of.",
+  "You're not playing. You're becoming.",
+  "Destiny is just reflex with a fancy name.",
+  "You exist. You tapped. That's enough for today.",
+  "The soul needs three things: food, love, and this.",
+  "Consciousness is the universe defeating itself.",
+  "You aren't escaping life. You're living it harder.",
+  "Happiness is a warm victory and a dark background.",
+  "Sisyphus pushed a boulder. You push a button. Progress.",
+  "The void stares back. You stare and tap.",
+  "You came, you saw, you tapped faster.",
+  "Some find meaning in prayer. You found it here.",
+  "Between birth and death, there's this. Make it count.",
+  "You are the meaning you've been searching for.",
+  "The hero doesn't ask why. They tap and move on.",
+  "Your ancestors survived plagues for this moment.",
+  "Joy is fleeting. So is the reaction window. Seize both.",
+  "Humanity's purpose remains unclear. Your tap was perfect.",
+  "XBLORP saves Earth. Again. Quietly. For free.",
+  "Galaxy-7 is watching. They're impressed.",
+  "Earth's trash count: reduced by one.",
+  "Mission log: target acquired and eliminated.",
+  "No cape required. Just good timing.",
+];
+let lastQ=-1;
+function getQuote(){let i;do{i=Math.floor(Math.random()*QUOTES.length);}while(i===lastQ);lastQ=i;return QUOTES[i];}
+
+function showToast(quote) {
+  const old=document.getElementById('victory-toast'); if(old) old.remove();
+  const toast=document.createElement('div'); toast.id='victory-toast';
+  toast.textContent=quote;
+  const isLong=quote.length>34;
+  toast.style.cssText=`
+    position:fixed;top:28%;left:50%;transform:translateX(-50%);
+    z-index:55;max-width:88vw;width:${isLong?'88vw':'max-content'};
+    background:#000;border:2px solid #44cc66;
+    color:#44cc66;font-family:'Press Start 2P',monospace;font-size:10px;
+    line-height:1.7;text-align:center;
+    padding:12px 16px;
+    animation:toastIn 0.3s steps(4) both;
+    pointer-events:none;
+    white-space:${isLong?'normal':'nowrap'};
+    letter-spacing:1px;
+  `;
+  document.body.appendChild(toast);
+  setTimeout(()=>{toast.style.transition='opacity 0.4s';toast.style.opacity='0';setTimeout(()=>toast.remove(),450);},2800);
 }
 
 // ══════════════════════════════════════════════
 //  GAME FLOW
 // ══════════════════════════════════════════════
 function startGame() {
-  killCount = 0;
-  defeatedList = [];
-  kcEl.style.display = 'none';
-  buildStars();
-  buildSparkles();
-  beginRound();
+  killCount=0; defeatedList=[];
+  kcEl.style.display='none';
+  buildStars(); beginRound();
 }
 
 function beginRound() {
-  gameState = 'waiting';
-  REACTION_WINDOW = 300 + Math.random() * 700;
-  renderChars();
-  resetEnemyScale();
-  exclaimEl.classList.remove('show');
-  stopTimer();
-  tapHint.textContent = 'Waiting for the signal...';
+  gameState='waiting';
+
+  // ── Progressive difficulty with jitter ──
+  // Base window: 1100ms at kill 0 → 300ms at kill 99+
+  // Add random jitter of ±1 difficulty tier (~150ms) so it never feels linear
+  const MIN_MS = 300;
+  const MAX_MS = 1100;
+  const progress = Math.min(killCount / 99, 1); // 0..1
+  // Ease-in curve so early game is more forgiving
+  const easedProgress = Math.pow(progress, 0.7);
+  const base = MAX_MS - easedProgress * (MAX_MS - MIN_MS);
+  // Jitter: ±20% of current base, but clamped so it never goes below MIN or above MAX
+  const jitterRange = base * 0.22;
+  const jitter = (Math.random() * 2 - 1) * jitterRange;
+  REACTION_WINDOW = Math.round(Math.max(MIN_MS, Math.min(MAX_MS, base + jitter)));
+
+  renderChars(); resetEnemyScale();
+  exclaimEl.classList.remove('show'); stopTimer();
   showScreen('game');
-  if (killCount > 0) { kcEl.style.display = 'block'; kcNum.textContent = killCount; }
-  waitTimer = setTimeout(showExclaim, 3000 + Math.random() * 3000);
+  if(killCount>0){kcEl.style.display='block';kcNum.textContent=killCount;}
+  startWind();
+  waitTimer=setTimeout(showExclaim,4000+Math.random()*3000);
 }
 
 function showExclaim() {
-  if (gameState !== 'waiting') return;
-  gameState = 'active';
-  applyEnemyScale();
-
-  const bang = exclaimEl.querySelector('.ex-bang');
-  const sub  = exclaimEl.querySelector('.ex-sub');
-  bang.style.animation = 'none'; sub.style.animation = 'none';
+  if(gameState!=='waiting') return;
+  gameState='active'; stopWind(); applyEnemyScale();
+  const bang=exclaimEl.querySelector('.ex-bang');
+  const sub=exclaimEl.querySelector('.ex-sub');
+  bang.style.animation='none'; sub.style.animation='none';
   void exclaimEl.offsetWidth;
-  bang.style.animation = ''; sub.style.animation = '';
-
-  exclaimEl.classList.add('show');
-  startTimer();
-  reactTimer = setTimeout(enemyAttacks, REACTION_WINDOW);
+  bang.style.animation=''; sub.style.animation='';
+  exclaimEl.classList.add('show'); startTimer();
+  reactTimer=setTimeout(enemyAttacks, REACTION_WINDOW);
 }
 
 function playerWins() {
-  if (gameState !== 'active') return;
+  if(gameState!=='active') return;
   clearTimeout(reactTimer);
-  gameState = 'transitioning';
-  exclaimEl.classList.remove('show');
-  stopTimer();
-  doFlash();
-
-  // Record the defeated villain before incrementing killCount
-  const defeated = getEnemy();
-  defeatedList.push(defeated);
-
-  killCount++;
-  kcNum.textContent = killCount;
-  kcEl.style.display = 'block';
-
-  charR.className = 'char-wrap defeated-r';
-  setTimeout(confetti, 200);
-  runBlock.style.display = 'block';
-
-  setTimeout(() => { charL.className = 'char-wrap attack-l'; }, 80);
-  setTimeout(() => { charL.className = 'char-wrap run-fwd';  }, 650);
-
-  setTimeout(() => {
-    renderChars();
-    resetEnemyScale();
-    charR.className = 'char-wrap slide-in';
-  }, 2000);
-
-  setTimeout(() => {
-    runBlock.style.display = 'none';
-    charL.className = 'char-wrap idle-l';
-    charR.className = 'char-wrap idle-r';
-    charR.style.transform = 'scaleX(-1)';
-    gameState = 'waiting';
-    exclaimEl.classList.remove('show');
-    stopTimer();
-    tapHint.textContent = 'Waiting for the signal...';
-    waitTimer = setTimeout(showExclaim, 3000 + Math.random() * 3000);
-  }, 3000);
+  gameState='transitioning';
+  exclaimEl.classList.remove('show'); stopTimer(); doFlash();
+  const defeated=getEnemy(); defeatedList.push(defeated);
+  killCount++; kcNum.textContent=killCount; kcEl.style.display='block';
+  charR.className='char-wrap defeated-r';
+  showToast(getQuote());
+  setTimeout(confetti,200);
+  runBlock.style.display='block';
+  setTimeout(()=>{charL.className='char-wrap attack-l';},80);
+  setTimeout(()=>{charL.className='char-wrap run-fwd';},650);
+  setTimeout(()=>{renderChars();resetEnemyScale();charR.className='char-wrap slide-in';},3500);
+  setTimeout(()=>{
+    runBlock.style.display='none';
+    charL.className='char-wrap idle-l';
+    charR.className='char-wrap idle-r';
+    charR.style.transform='scaleX(-1)';
+    gameState='waiting';
+    exclaimEl.classList.remove('show'); stopTimer();
+    startWind();
+    waitTimer=setTimeout(showExclaim,4000+Math.random()*3000);
+  },5000);
 }
 
 function enemyAttacks() {
-  clearTimeout(waitTimer);
-  gameState = 'end';
-  exclaimEl.classList.remove('show');
-  stopTimer();
-  doFlash();
-
-  charR.className = 'char-wrap lunge-r';
-  setTimeout(() => { charL.className = 'char-wrap defeated-l'; }, 180);
-
-  setTimeout(() => {
-    const n = killCount;
-    const enemy = ENEMIES[Math.min(n, ENEMIES.length - 1)];
-    if (n === 0)      rStreakEl.innerHTML = `Struck down by <span>${enemy.emoji} ${ENEMIES[0].name}</span>!`;
-    else if (n === 1) rStreakEl.innerHTML = `Defeated <span>1 villain</span> before falling!`;
-    else              rStreakEl.innerHTML = `Defeated <span>${n} villains</span> before falling!`;
-
-    // Build villain list
-    const listWrap = document.getElementById('villain-list-wrap');
-    if (defeatedList.length === 0) {
-      listWrap.innerHTML = '';
-    } else {
-      listWrap.innerHTML = defeatedList.map((v, i) =>
-        `<div class="villain-item" style="animation-delay:${i * 0.07}s">
-          <span class="villain-num">${i + 1}.</span>
-          <span class="villain-emoji">${v.emoji}</span>
-          <span class="villain-name">${v.name}</span>
-          <span class="villain-check">✓</span>
-        </div>`
-      ).join('');
-    }
-
+  clearTimeout(waitTimer); gameState='end';
+  exclaimEl.classList.remove('show'); stopTimer(); stopWind(); doFlash();
+  charR.className='char-wrap lunge-r';
+  setTimeout(()=>{charL.className='char-wrap defeated-l';},180);
+  setTimeout(()=>{
+    const n=killCount;
+    const firstEnemy=ENEMIES[0];
+    if(n===0) rStreakEl.innerHTML=`Eliminated by <span>${firstEnemy.emoji} ${firstEnemy.name}</span>!`;
+    else if(n===1) rStreakEl.innerHTML=`Eliminated <span>1 target</span> before going down!`;
+    else rStreakEl.innerHTML=`Eliminated <span>${n} targets</span> before going down!`;
+    const pct=getPercentile(n);
+    const pctEl=document.getElementById('r-percentile');
+    pctEl.textContent=pct.msg; pctEl.className=`r-percentile show ${pct.cls}`;
+    const listWrap=document.getElementById('villain-list-wrap');
+    if(defeatedList.length===0){listWrap.innerHTML='';}
+    else{listWrap.innerHTML=defeatedList.map((v,i)=>`<div class="villain-item" style="animation-delay:${i*.07}s"><span class="villain-num">${i+1}.</span><span class="villain-emoji">${v.emoji}</span><span class="villain-name">${v.name}</span><span class="villain-check">✓</span></div>`).join('');}
     showScreen('end');
-  }, 950);
+  },950);
 }
 
 function goToLanding() {
-  gameState = 'landing';
-  killCount = 0;
-  defeatedList = [];
+  gameState='landing'; killCount=0; defeatedList=[];
   clearTimeout(waitTimer); clearTimeout(reactTimer);
-  exclaimEl.classList.remove('show');
-  stopTimer();
-  kcEl.style.display = 'none';
-  runBlock.style.display = 'none';
-  // Reset to Jerusalem
-  skyEl.className    = 'sky-jerusalem';
-  groundEl.className = 'gnd-jerusalem';
-  grassEl.className  = 'grs-jerusalem';
-  pyramidEl.style.opacity = colosseumEl.style.opacity = kremlinEl.style.opacity = eiffelEl.style.opacity = '0';
-  starsEl.style.opacity = sparklesEl.style.opacity = '0';
-  cl1El.style.opacity = cl2El.style.opacity = '1';
-  renderChars();
-  buildPreview();
+  exclaimEl.classList.remove('show'); stopTimer(); stopWind();
+  kcEl.style.display='none'; runBlock.style.display='none';
+  skyEl.className='sky-day'; groundEl.className='gnd-day'; grassEl.className='grs-day';
+  starsEl.style.opacity='0';
+  cl1El.style.opacity=cl2El.style.opacity='0.7';
+  // Build preview
+  innerL.innerHTML=renderPixels(ALIEN_GRID);
+  innerR.innerHTML=renderPixels(ENEMIES[0].grid);
+  charL.style.transform='scale(0.65)'; charL.style.transformOrigin='bottom center';
+  charR.style.transform='scaleX(-1) scale(0.65)'; charR.style.transformOrigin='bottom center';
+  charL.className='char-wrap'; charR.className='char-wrap';
   showScreen('landing');
-}
-
-function buildPreview() {
-  const pL = document.getElementById('preview-left');
-  const pR = document.getElementById('preview-right');
-  pL.innerHTML = buildChar(JESUS_CFG);
-  pR.innerHTML = buildChar(ENEMIES[0].cfg);
-  pL.style.cssText = 'transform:scale(0.62);transform-origin:bottom center;display:block;';
-  pR.style.cssText = 'transform:scale(0.62) scaleX(-1);transform-origin:bottom center;display:block;';
 }
 
 // ══════════════════════════════════════════════
 //  INPUT
 // ══════════════════════════════════════════════
 function handleTap(e) {
-  if (e.target.closest('button')) return;
-  if (gameState === 'waiting') {
-    clearTimeout(waitTimer);
-    enemyAttacks();
-  } else if (gameState === 'active') {
-    playerWins();
-  }
+  if(e.target.closest('button')) return;
+  if(gameState==='waiting'){clearTimeout(waitTimer);enemyAttacks();}
+  else if(gameState==='active'){playerWins();}
 }
 
-document.getElementById('scr-game').addEventListener('touchstart', handleTap, {passive:true});
-document.getElementById('scr-game').addEventListener('mousedown',  handleTap);
-document.getElementById('startBtn').addEventListener('click', startGame);
-document.getElementById('startBtn').addEventListener('touchstart', e => { e.preventDefault(); startGame(); }, {passive:false});
-document.getElementById('againBtn').addEventListener('click', goToLanding);
-document.getElementById('againBtn').addEventListener('touchstart', e => { e.preventDefault(); goToLanding(); }, {passive:false});
-document.addEventListener('touchend', e => { if (e.cancelable) e.preventDefault(); }, {passive:false});
+document.getElementById('scr-game').addEventListener('touchstart',handleTap,{passive:true});
+document.getElementById('scr-game').addEventListener('mousedown',handleTap);
+document.getElementById('startBtn').addEventListener('click',startGame);
+document.getElementById('startBtn').addEventListener('touchstart',e=>{e.preventDefault();startGame();},{passive:false});
+document.getElementById('againBtn').addEventListener('click',goToLanding);
+document.getElementById('againBtn').addEventListener('touchstart',e=>{e.preventDefault();goToLanding();},{passive:false});
+document.addEventListener('touchend',e=>{if(e.cancelable)e.preventDefault();},{passive:false});
 
 // ── Init ──
 buildStars();
-buildSparkles();
-renderChars();
-buildPreview();
+goToLanding();
 </script>
 </body>
 </html>
