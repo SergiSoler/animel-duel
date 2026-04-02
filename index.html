@@ -190,11 +190,12 @@ body{font-family:'Press Start 2P',monospace;width:100vw;height:100vh;overflow:hi
 
 /* Enemy name banner */
 #enemy-banner{
-  position:fixed;top:4%;left:50%;transform:translateX(-50%);
-  z-index:55;background:#000;border:2px solid #44cc66;
-  color:#44cc66;font-size:9px;padding:5px 12px;
+  position:fixed;top:28%;left:50%;transform:translateX(-50%);
+  z-index:54;background:#000;border:3px solid #44cc66;
+  color:#44cc66;font-size:13px;padding:7px 18px;
   white-space:nowrap;opacity:0;transition:opacity .5s;
-  font-family:'Press Start 2P',monospace;letter-spacing:1px;
+  font-family:'Press Start 2P',monospace;letter-spacing:2px;
+  box-shadow:3px 3px 0 #0d2d0d;
 }
 #enemy-banner.show{opacity:1;}
 
@@ -342,11 +343,11 @@ body{font-family:'Press Start 2P',monospace;width:100vw;height:100vh;overflow:hi
 <div class="screen" id="scr-land">
   <div class="card">
     <div class="game-title">ANIMEL<br>DUELS</div>
-    <div class="game-sub">★ PIXEL JUSTICE ★</div>
+    <div class="game-sub">★ YES! GAMES ★</div>
     <div class="lore-text">
       You are <em>XBLORP</em> — an alien bounty hunter sent from Galaxy-7.<br><br>
       Earth has produced some <em>real trash</em>. Politicians, divas, ego-monsters...<br><br>
-      Your mission: <em>clean the planet.</em> One celebrity at a time. Go get them.
+      Your mission: <em>clean the planet.</em> Restore the peace. One celebrity at a time. Go get them.
     </div>
     <div class="preview-row">
       <div id="preview-left"></div>
@@ -401,41 +402,44 @@ function renderPixels(grid, scale = 6) {
   return html;
 }
 
-// ── XBLORP — alien player (pink) ──
-const ALIEN_PINK   = '#ff69b4';
-const ALIEN_DARK   = '#cc3377';
-const ALIEN_EYE    = '#33cccc';
-const ALIEN_PUPIL  = '#003333';
-const ALIEN_WEAPON = '#aaaaaa';
-const ALIEN_WDARK  = '#666666';
-const ALIEN_BELLY  = '#ff99cc';
-const ALIEN_SUIT   = '#220044';
-const ALIEN_SUIT2  = '#330066';
-const ALIEN_BOOT   = '#111122';
-const ALIEN_GLOW   = '#ff00ff';
+// ── XBLORP — ugly grotesque alien ──
+const AP  = '#7a2d8c';   // body purple
+const AP2 = '#5a1a6a';   // dark purple
+const AS  = '#c44dff';   // skin / slime
+const AS2 = '#e080ff';   // highlight
+const AW  = '#33ff00';   // wart/gross green
+const AE  = '#ff4400';   // angry red eye
+const AP3 = '#3a0050';   // very dark
+const AT  = '#ffcc00';   // teeth
+const ABL = '#ff6600';   // belly orange
+const ABK = '#111111';   // black
+const AWP = '#cccccc';   // weapon
 
 const ALIEN_GRID = [
-  // antennae
-  [_,_,_,_,ALIEN_DARK,_,_,ALIEN_DARK,_,_,_,_],
-  [_,_,_,ALIEN_GLOW,_,_,_,_,ALIEN_GLOW,_,_,_],
-  // head
-  [_,_,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,_,_],
-  [_,ALIEN_PINK,ALIEN_EYE,ALIEN_EYE,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_EYE,ALIEN_EYE,ALIEN_PINK,ALIEN_PINK,_],
-  [_,ALIEN_PINK,ALIEN_EYE,ALIEN_PUPIL,ALIEN_EYE,ALIEN_PINK,ALIEN_EYE,ALIEN_PUPIL,ALIEN_EYE,ALIEN_PINK,ALIEN_PINK,_],
-  [_,ALIEN_PINK,ALIEN_EYE,ALIEN_EYE,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_EYE,ALIEN_EYE,ALIEN_PINK,ALIEN_PINK,_],
-  [_,ALIEN_PINK,ALIEN_PINK,ALIEN_DARK,ALIEN_DARK,ALIEN_DARK,ALIEN_DARK,ALIEN_DARK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,_],
-  [_,_,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,ALIEN_PINK,_,_],
-  // body / suit
-  [_,_,ALIEN_SUIT,ALIEN_SUIT,ALIEN_SUIT2,ALIEN_BELLY,ALIEN_BELLY,ALIEN_SUIT2,ALIEN_SUIT,ALIEN_SUIT,_,_],
-  [_,ALIEN_WEAPON,ALIEN_SUIT,ALIEN_SUIT2,ALIEN_BELLY,ALIEN_BELLY,ALIEN_BELLY,ALIEN_BELLY,ALIEN_SUIT2,ALIEN_SUIT,ALIEN_GLOW,_],
-  [_,ALIEN_WDARK,ALIEN_SUIT,ALIEN_SUIT2,ALIEN_SUIT,ALIEN_BELLY,ALIEN_BELLY,ALIEN_SUIT,ALIEN_SUIT2,ALIEN_SUIT,ALIEN_GLOW,_],
-  [_,ALIEN_WDARK,ALIEN_SUIT,ALIEN_SUIT,ALIEN_SUIT2,ALIEN_SUIT,ALIEN_SUIT,ALIEN_SUIT2,ALIEN_SUIT,ALIEN_SUIT,_,_],
-  [_,_,ALIEN_WDARK,ALIEN_SUIT,ALIEN_SUIT,ALIEN_SUIT,ALIEN_SUIT,ALIEN_SUIT,ALIEN_SUIT,ALIEN_WDARK,_,_],
-  // legs
-  [_,_,ALIEN_SUIT,ALIEN_SUIT,_,_,_,_,ALIEN_SUIT,ALIEN_SUIT,_,_],
-  [_,_,ALIEN_SUIT2,ALIEN_SUIT2,_,_,_,_,ALIEN_SUIT2,ALIEN_SUIT2,_,_],
-  // boots
-  [_,_,ALIEN_BOOT,ALIEN_BOOT,ALIEN_BOOT,_,_,ALIEN_BOOT,ALIEN_BOOT,ALIEN_BOOT,_,_],
+  // bumpy head spikes
+  [_,_,AP2,_,AP2,_,AP2,_,AP2,_,AP2,_],
+  [_,AP2,AP,_,AP,_,AP,_,AP,_,AP,_],
+  // wide lumpy head
+  [AP2,AS,AS,AS,AS,AP,AP,AS,AS,AS,AS,AP2],
+  // row with 3 uneven eyes
+  [AS,AE,AE,AS,AE,AE,AE,AS,AE,AE,AS,AS],
+  [AS,AE,ABK,AS,AE,ABK,AE,AS,AE,ABK,AS,AS],
+  [AS,AW,AW,AS,AS,AW,AS,AS,AW,AW,AS,AS],
+  // gross frown with jagged teeth
+  [AS,AS,AT,AS,AS,AS,AS,AS,AS,AT,AS,AS],
+  [AS2,AT,ABK,AT,ABK,AT,AT,ABK,AT,ABK,AT,AS2],
+  // fat wobbly body
+  [_,AP,AP,AP,AP,ABL,ABL,AP,AP,AP,AP,_],
+  [AWP,AP2,AP,AP,ABL,AW,AW,ABL,AP,AP,AP2,AS],
+  [AWP,AP2,AP,AW,ABL,ABL,ABL,ABL,AW,AP,AP2,AS],
+  [_,AP2,AP,AP,AP,AP,AP,AP,AP,AP,AP2,_],
+  // stubby arms and bloated middle
+  [AP2,AP,AW,AP,AP,AP,AP,AP,AP,AW,AP,AP2],
+  // stumpy legs
+  [_,_,AP2,AP,_,_,_,_,AP,AP2,_,_],
+  [_,_,AS,AP2,_,_,_,_,AP2,AS,_,_],
+  // big ugly feet
+  [_,AP2,AP2,AP2,AP2,_,_,AP2,AP2,AP2,AP2,_],
 ];
 
 // ── ENEMY COLOR PALETTES ──
@@ -615,14 +619,21 @@ const CHAOS_GRID = [
 //  ENEMY ROSTER — Modern Famous People
 // ══════════════════════════════════════════════
 const BG = {
-  usa:   {sky:'sky-usa',  gnd:'gnd-usa',  grs:'grs-usa'},
-  uk:    {sky:'sky-uk',   gnd:'gnd-uk',   grs:'grs-uk'},
-  pop:   {sky:'sky-pop',  gnd:'gnd-pop',  grs:'grs-pop'},
-  sport: {sky:'sky-sport',gnd:'gnd-sport',grs:'grs-sport'},
-  film:  {sky:'sky-film', gnd:'gnd-film', grs:'grs-film'},
-  night: {sky:'sky-night',gnd:'gnd-night',grs:'grs-night'},
-  chaos: {sky:'sky-chaos',gnd:'gnd-chaos',grs:'grs-chaos'},
+  usa:    {sky:'sky-usa',   gnd:'gnd-usa',   grs:'grs-usa'},
+  uk:     {sky:'sky-uk',    gnd:'gnd-uk',     grs:'grs-uk'},
+  pop:    {sky:'sky-pop',   gnd:'gnd-pop',    grs:'grs-pop'},
+  sport:  {sky:'sky-sport', gnd:'gnd-sport',  grs:'grs-sport'},
+  film:   {sky:'sky-film',  gnd:'gnd-film',   grs:'grs-film'},
+  night:  {sky:'sky-night', gnd:'gnd-night',  grs:'grs-night'},
+  chaos:  {sky:'sky-chaos', gnd:'gnd-chaos',  grs:'grs-chaos'},
+  desert: {sky:'sky-night', gnd:'gnd-usa',    grs:'grs-usa'},
 };
+
+// Netanyahu - bald, grey suit, stern face
+const BIBI_GRID = makeEnemy(LT, LT, '#336699', '#224488', BK, null, null, true, '#003366');
+// bald = head color same as skin
+BIBI_GRID[1] = [_,_,LT,LT,LT,LT,LT,LT,LT,LT,_,_];
+BIBI_GRID[0] = [_,_,_,_,_,_,_,_,_,_,_,_];
 
 const ENEMIES = [
   // POLITICIANS
@@ -630,7 +641,8 @@ const ENEMIES = [
   {name:'Vladimir Putin',   emoji:'🇷🇺', bg:BG.night, grid:PUTIN_GRID},
   {name:'Boris Johnson',    emoji:'🇬🇧', bg:BG.uk,    grid:BORIS_GRID},
   {name:'Kim Jong-un',      emoji:'🇰🇵', bg:BG.night, grid:KIM_GRID},
-  {name:'Zelensky',         emoji:'🇺🇦', bg:BG.night, grid:ZELENSKY_GRID},
+  {name:'Zelensky',         emoji:'🇺🇦', bg:BG.night,  grid:ZELENSKY_GRID},
+  {name:'Netanyahu',        emoji:'🇮🇱', bg:BG.desert, grid:BIBI_GRID},
   // TECH BILLIONAIRES
   {name:'Elon Musk',        emoji:'🚀', bg:BG.usa,   grid:MUSK_GRID},
   {name:'Jeff Bezos',       emoji:'📦', bg:BG.usa,   grid:BEZOS_GRID},
@@ -921,16 +933,16 @@ function beginRound() {
   gameState='waiting';
 
   // ── Progressive difficulty with jitter ──
-  // Base window: 1100ms at kill 0 → 300ms at kill 99+
-  // Add random jitter of ±1 difficulty tier (~150ms) so it never feels linear
+  // Starts at 900ms, hits 300ms by kill ~25, stays brutal after
+  // Steep power curve so early game ramps fast
   const MIN_MS = 300;
-  const MAX_MS = 1100;
-  const progress = Math.min(killCount / 99, 1); // 0..1
-  // Ease-in curve so early game is more forgiving
-  const easedProgress = Math.pow(progress, 0.7);
+  const MAX_MS = 900;
+  const progress = Math.min(killCount / 30, 1); // hits max difficulty by kill 30
+  // Power 1.8 = very steep early ramp
+  const easedProgress = Math.pow(progress, 1.8);
   const base = MAX_MS - easedProgress * (MAX_MS - MIN_MS);
-  // Jitter: ±20% of current base, but clamped so it never goes below MIN or above MAX
-  const jitterRange = base * 0.22;
+  // Jitter ±18% for non-linearity
+  const jitterRange = base * 0.18;
   const jitter = (Math.random() * 2 - 1) * jitterRange;
   REACTION_WINDOW = Math.round(Math.max(MIN_MS, Math.min(MAX_MS, base + jitter)));
 
@@ -951,6 +963,7 @@ function showExclaim() {
   void exclaimEl.offsetWidth;
   bang.style.animation=''; sub.style.animation='';
   exclaimEl.classList.add('show'); startTimer();
+  playAlertSound();
   reactTimer=setTimeout(enemyAttacks, REACTION_WINDOW);
 }
 
@@ -962,6 +975,7 @@ function playerWins() {
   const defeated=getEnemy(); defeatedList.push(defeated);
   killCount++; kcNum.textContent=killCount; kcEl.style.display='block';
   charR.className='char-wrap defeated-r';
+  playWinSound();
   showToast(getQuote());
   setTimeout(confetti,200);
   runBlock.style.display='block';
@@ -983,6 +997,7 @@ function playerWins() {
 function enemyAttacks() {
   clearTimeout(waitTimer); gameState='end';
   exclaimEl.classList.remove('show'); stopTimer(); stopWind(); doFlash();
+  playDefeatSound();
   charR.className='char-wrap lunge-r';
   setTimeout(()=>{charL.className='char-wrap defeated-l';},180);
   setTimeout(()=>{
@@ -1035,9 +1050,394 @@ document.getElementById('againBtn').addEventListener('click',goToLanding);
 document.getElementById('againBtn').addEventListener('touchstart',e=>{e.preventDefault();goToLanding();},{passive:false});
 document.addEventListener('touchend',e=>{if(e.cancelable)e.preventDefault();},{passive:false});
 
+// ══════════════════════════════════════════════
+//  CINEMATIC WESTERN MUSIC
+//  Morricone "The Good The Bad The Ugly" style
+//  + tension scaling + win fanfare + working mute
+// ══════════════════════════════════════════════
+let audioCtx      = null;
+let masterGain    = null;   // controls overall volume
+let musicPlaying  = false;
+let musicTimeout  = null;
+let muted         = false;
+
+function initAudio() {
+  if (audioCtx) return;
+  audioCtx  = new (window.AudioContext || window.webkitAudioContext)();
+  masterGain = audioCtx.createGain();
+  masterGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+  masterGain.connect(audioCtx.destination);
+}
+
+// ── Low-level helpers ──
+function sineNote(freq, start, dur, vol, vibHz=0, vibDepth=0) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const env = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(freq, start);
+
+  if (vibHz > 0) {
+    const lfo = audioCtx.createOscillator();
+    const lfoG = audioCtx.createGain();
+    lfo.frequency.setValueAtTime(vibHz, start);
+    lfoG.gain.setValueAtTime(vibDepth, start);
+    lfo.connect(lfoG); lfoG.connect(osc.frequency);
+    lfo.start(start); lfo.stop(start + dur + 0.05);
+  }
+
+  const atk = Math.min(0.1, dur * 0.25);
+  const rel = Math.min(0.25, dur * 0.35);
+  env.gain.setValueAtTime(0, start);
+  env.gain.linearRampToValueAtTime(vol, start + atk);
+  env.gain.setValueAtTime(vol, start + dur - rel);
+  env.gain.linearRampToValueAtTime(0, start + dur);
+
+  osc.connect(env); env.connect(masterGain);
+  osc.start(start); osc.stop(start + dur + 0.06);
+}
+
+// Pad: three detuned sines for warmth
+function padNote(freq, start, dur, vol) {
+  if (!audioCtx) return;
+  [-6, 0, 6].forEach(cents => {
+    const osc = audioCtx.createOscillator();
+    const env = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, start);
+    osc.detune.setValueAtTime(cents, start);
+    env.gain.setValueAtTime(0, start);
+    env.gain.linearRampToValueAtTime(vol / 3, start + 0.2);
+    env.gain.setValueAtTime(vol / 3, start + dur - 0.3);
+    env.gain.linearRampToValueAtTime(0, start + dur);
+    osc.connect(env); env.connect(masterGain);
+    osc.start(start); osc.stop(start + dur + 0.1);
+  });
+}
+
+// Kick drum
+function kick(start, vol=0.3) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const env = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(110, start);
+  osc.frequency.exponentialRampToValueAtTime(38, start + 0.2);
+  env.gain.setValueAtTime(vol, start);
+  env.gain.exponentialRampToValueAtTime(0.001, start + 0.25);
+  osc.connect(env); env.connect(masterGain);
+  osc.start(start); osc.stop(start + 0.28);
+}
+
+// Hi-hat (filtered noise)
+function hat(start, vol=0.06) {
+  if (!audioCtx) return;
+  const len = Math.floor(audioCtx.sampleRate * 0.07);
+  const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i=0;i<len;i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(audioCtx.sampleRate*0.012));
+  const src = audioCtx.createBufferSource();
+  const flt = audioCtx.createBiquadFilter();
+  const env = audioCtx.createGain();
+  flt.type = 'highpass'; flt.frequency.value = 7000;
+  env.gain.setValueAtTime(vol, start);
+  src.buffer = buf;
+  src.connect(flt); flt.connect(env); env.connect(masterGain);
+  src.start(start);
+}
+
+// Tension tick (staccato high string pluck for stress)
+function tick(start, vol=0.07) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const env = audioCtx.createGain();
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(880, start);
+  env.gain.setValueAtTime(0, start);
+  env.gain.linearRampToValueAtTime(vol, start + 0.01);
+  env.gain.linearRampToValueAtTime(0, start + 0.07);
+  osc.connect(env); env.connect(masterGain);
+  osc.start(start); osc.stop(start + 0.1);
+}
+
+// ── MAIN LOOP ──
+// stressLevel 0..1 controls extra tension elements
+function playWesternLoop(stressLevel=0) {
+  if (!musicPlaying || !audioCtx) return;
+
+  const t = audioCtx.currentTime + 0.04;
+  const q = 0.52; // ~115bpm — slightly urgent feel
+
+  // ════ MELODY: The iconic "Wah-wah-wah" whistle ════
+  // Phrase 1 — wah wah WAH (G → F# → G)
+  sineNote(392, t + 0*q,   1.5*q, 0.20, 5.5, 6);   // G4 wah
+  sineNote(370, t + 1.5*q, 0.35*q, 0.15, 5, 3);     // F#4 dip
+  sineNote(392, t + 1.85*q, 2.15*q, 0.22, 5.5, 7);  // G4 hold — the long "waaah"
+
+  // Phrase 2 — wee wee WEE (C → Bb → C)
+  sineNote(523, t + 4.5*q, 1.4*q, 0.18, 5, 5);      // C5
+  sineNote(494, t + 5.9*q, 0.35*q, 0.14, 5, 3);     // B4 dip
+  sineNote(523, t + 6.25*q, 2.25*q, 0.18, 5.5, 6);  // C5 hold
+
+  // Phrase 3 — the low aaaooo  (E3 → D3 → C3)
+  sineNote(330, t + 9.5*q, 0.8*q, 0.19, 4, 4);      // E4
+  sineNote(294, t + 10.3*q, 0.6*q, 0.17, 4, 4);     // D4
+  sineNote(261, t + 11*q, 1.5*q, 0.22, 4.5, 6);     // C4 long
+
+  // ════ HARMONY: Warm pads ════
+  padNote(196, t + 0*q,   4.5*q, 0.12);  // G2
+  padNote(130, t + 0*q,   4.5*q, 0.09);  // C2 harmony
+  padNote(220, t + 4.5*q, 4.5*q, 0.11);  // A2
+  padNote(147, t + 4.5*q, 4.5*q, 0.08);  // D2
+  padNote(196, t + 9.5*q, 3*q,   0.13);  // G2
+
+  // ════ BASS: Deep plucks ════
+  sineNote(98,  t + 0*q,    0.5*q, 0.28, 0, 0);   // G2
+  sineNote(98,  t + 2*q,    0.4*q, 0.22, 0, 0);
+  sineNote(110, t + 4.5*q,  0.5*q, 0.28, 0, 0);   // A2
+  sineNote(110, t + 6.5*q,  0.4*q, 0.22, 0, 0);
+  sineNote(98,  t + 9.5*q,  0.8*q, 0.30, 0, 0);   // G2 resolution
+
+  // ════ RHYTHM: Kick + hat ════
+  kick(t + 0*q, 0.28);     hat(t + 0.5*q);
+  kick(t + 2*q, 0.22);     hat(t + 2.5*q);
+  kick(t + 4.5*q, 0.28);   hat(t + 5*q);
+  kick(t + 6.5*q, 0.22);   hat(t + 7*q);
+  kick(t + 9.5*q, 0.30);
+
+  // ════ STRESS LAYER: Tension ticks (subtle at low kills, more intense later) ════
+  if (stressLevel > 0) {
+    const numTicks = Math.floor(stressLevel * 6); // 0..6 ticks per loop
+    const tickPositions = [1*q, 3*q, 5.5*q, 7.5*q, 8.5*q, 11.5*q];
+    for (let i = 0; i < numTicks; i++) {
+      tick(t + tickPositions[i], 0.04 + stressLevel * 0.06);
+    }
+    // At high stress, add fast tremolo on melody by shortening vibrato
+    if (stressLevel > 0.6) {
+      // Extra rapid heartbeat kicks
+      kick(t + 1*q, 0.10 * stressLevel);
+      kick(t + 3*q, 0.08 * stressLevel);
+      kick(t + 5*q, 0.10 * stressLevel);
+    }
+  }
+
+  const loopLen = 13 * q;
+  musicTimeout = setTimeout(() => {
+    // Recalculate stress from current killCount each loop
+    const stress = Math.min(killCount / 30, 1); // 0 at kill 0, max at kill 30
+    playWesternLoop(stress);
+  }, (loopLen - 0.08) * 1000);
+}
+
+// ── ALERT SOUND — sharp attention-grabber when ! appears ──
+function playAlertSound() {
+  if (!audioCtx) return;
+  const t = audioCtx.currentTime;
+  // Two quick sharp pings + a low thump for impact
+  const pings = [
+    [1200, 0.00, 0.08, 0.30],
+    [1600, 0.07, 0.10, 0.35],
+    [2000, 0.15, 0.14, 0.40],
+  ];
+  pings.forEach(([freq, delay, dur, vol]) => {
+    const osc = audioCtx.createOscillator();
+    const env = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, t + delay);
+    osc.frequency.exponentialRampToValueAtTime(freq * 0.6, t + delay + dur);
+    env.gain.setValueAtTime(0, t + delay);
+    env.gain.linearRampToValueAtTime(vol, t + delay + 0.01);
+    env.gain.exponentialRampToValueAtTime(0.001, t + delay + dur);
+    osc.connect(env); env.connect(masterGain);
+    osc.start(t + delay); osc.stop(t + delay + dur + 0.02);
+  });
+  // Low thud underneath
+  const thud = audioCtx.createOscillator();
+  const thudEnv = audioCtx.createGain();
+  thud.type = 'sine';
+  thud.frequency.setValueAtTime(80, t);
+  thud.frequency.exponentialRampToValueAtTime(30, t + 0.12);
+  thudEnv.gain.setValueAtTime(0.5, t);
+  thudEnv.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+  thud.connect(thudEnv); thudEnv.connect(masterGain);
+  thud.start(t); thud.stop(t + 0.16);
+}
+
+// ── DEFEAT SOUND + SAD MUSIC ──
+function playDefeatSound() {
+  if (!audioCtx) return;
+  const t = audioCtx.currentTime;
+
+  // Stop main music loop and duck it out
+  stopMusic();
+  masterGain.gain.setValueAtTime(masterGain.gain.value, t);
+  masterGain.gain.linearRampToValueAtTime(0.0, t + 0.3);
+
+  // Create a separate gain for defeat sounds so mute doesn't block them
+  const defeatGain = audioCtx.createGain();
+  defeatGain.gain.setValueAtTime(0.6, t);
+  defeatGain.connect(audioCtx.destination);
+
+  // 1. Dramatic impact thud
+  const impactOsc = audioCtx.createOscillator();
+  const impactEnv = audioCtx.createGain();
+  impactOsc.type = 'sine';
+  impactOsc.frequency.setValueAtTime(150, t);
+  impactOsc.frequency.exponentialRampToValueAtTime(25, t + 0.4);
+  impactEnv.gain.setValueAtTime(0.7, t);
+  impactEnv.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
+  impactOsc.connect(impactEnv); impactEnv.connect(defeatGain);
+  impactOsc.start(t); impactOsc.stop(t + 0.5);
+
+  // 2. Descending sad trumpet / horn tones (like "wah wah waaah")
+  const sadNotes = [
+    [466, 0.5,  0.30, 0.28],  // Bb4
+    [440, 0.8,  0.30, 0.25],  // A4
+    [415, 1.1,  0.30, 0.22],  // Ab4
+    [349, 1.4,  0.80, 0.30],  // F4 — long sad fall
+  ];
+  sadNotes.forEach(([freq, delay, dur, vol]) => {
+    const osc = audioCtx.createOscillator();
+    const vib = audioCtx.createOscillator();
+    const vibG = audioCtx.createGain();
+    const env = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, t + delay);
+    // Slight downward pitch bend for sadness
+    osc.frequency.linearRampToValueAtTime(freq * 0.92, t + delay + dur);
+    // Slow vibrato for that crying trumpet feel
+    vib.frequency.setValueAtTime(4.5, t + delay);
+    vibG.gain.setValueAtTime(6, t + delay);
+    vib.connect(vibG); vibG.connect(osc.frequency);
+    env.gain.setValueAtTime(0, t + delay);
+    env.gain.linearRampToValueAtTime(vol, t + delay + 0.08);
+    env.gain.setValueAtTime(vol, t + delay + dur - 0.15);
+    env.gain.linearRampToValueAtTime(0, t + delay + dur);
+    osc.connect(env); env.connect(defeatGain);
+    osc.start(t + delay); osc.stop(t + delay + dur + 0.05);
+    vib.start(t + delay); vib.stop(t + delay + dur + 0.05);
+  });
+
+  // 3. Somber low pad chord underneath
+  [174, 220, 261].forEach((freq, i) => {
+    const osc = audioCtx.createOscillator();
+    const env = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, t + 0.5);
+    env.gain.setValueAtTime(0, t + 0.5);
+    env.gain.linearRampToValueAtTime(0.12 - i * 0.03, t + 0.9);
+    env.gain.setValueAtTime(0.12 - i * 0.03, t + 2.0);
+    env.gain.linearRampToValueAtTime(0, t + 3.2);
+    osc.connect(env); env.connect(defeatGain);
+    osc.start(t + 0.5); osc.stop(t + 3.4);
+  });
+
+  // 4. Final slow descending plucks (like final curtain)
+  const finalNotes = [
+    [392, 2.4, 0.5, 0.20],  // G4
+    [349, 2.9, 0.5, 0.18],  // F4
+    [294, 3.4, 0.6, 0.16],  // D4
+    [261, 4.0, 1.2, 0.22],  // C4 — the long sad end
+  ];
+  finalNotes.forEach(([freq, delay, dur, vol]) => {
+    const osc = audioCtx.createOscillator();
+    const env = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, t + delay);
+    osc.frequency.linearRampToValueAtTime(freq * 0.95, t + delay + dur);
+    env.gain.setValueAtTime(0, t + delay);
+    env.gain.linearRampToValueAtTime(vol, t + delay + 0.06);
+    env.gain.setValueAtTime(vol, t + delay + dur - 0.3);
+    env.gain.linearRampToValueAtTime(0, t + delay + dur);
+    osc.connect(env); env.connect(defeatGain);
+    osc.start(t + delay); osc.stop(t + delay + dur + 0.05);
+  });
+}
+
+// ── WIN FANFARE ──
+function playWinSound() {
+  if (!audioCtx) return;
+  const t = audioCtx.currentTime;
+  // Duck music for 3 seconds so quote is readable
+  masterGain.gain.setValueAtTime(masterGain.gain.value, t);
+  masterGain.gain.linearRampToValueAtTime(0.12, t + 0.08);
+  masterGain.gain.linearRampToValueAtTime(0.5, t + 3.2);
+
+  // Fanfare: rising triumphant notes
+  const fanfare = [
+    [523, 0.00, 0.12, 0.22],   // C5
+    [659, 0.13, 0.12, 0.22],   // E5
+    [784, 0.26, 0.18, 0.25],   // G5
+    [1047,0.44, 0.35, 0.28],   // C6 — high zing
+    [784, 0.82, 0.20, 0.18],   // G5 bounce
+    [880, 1.05, 0.40, 0.22],   // A5 tail
+  ];
+  fanfare.forEach(([freq, delay, dur, vol]) => {
+    const osc = audioCtx.createOscillator();
+    const env = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, t + delay);
+    env.gain.setValueAtTime(0, t + delay);
+    env.gain.linearRampToValueAtTime(vol, t + delay + 0.04);
+    env.gain.setValueAtTime(vol, t + delay + dur - 0.06);
+    env.gain.linearRampToValueAtTime(0, t + delay + dur);
+    osc.connect(env); env.connect(masterGain);
+    osc.start(t + delay); osc.stop(t + delay + dur + 0.05);
+  });
+}
+
+// ── Controls ──
+function startMusic() {
+  if (musicPlaying) return;
+  initAudio();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  musicPlaying = true;
+  muted = false;
+  masterGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+  updateMuteBtn();
+  playWesternLoop(0);
+}
+
+function stopMusic() {
+  musicPlaying = false;
+  clearTimeout(musicTimeout);
+}
+
+function updateMuteBtn() {
+  const btn = document.getElementById('mute-btn');
+  if (!btn) return;
+  if (muted) {
+    btn.textContent = '✕';
+    btn.style.color = '#dd2244';
+    btn.style.borderColor = '#dd2244';
+  } else {
+    btn.textContent = '♪';
+    btn.style.color = '#44cc66';
+    btn.style.borderColor = '#44cc66';
+  }
+}
+
+function toggleMute() {
+  if (!audioCtx) initAudio();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  muted = !muted;
+  if (muted) {
+    masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.2);
+    if (!musicPlaying) { musicPlaying = true; playWesternLoop(Math.min(killCount/30,1)); }
+  } else {
+    masterGain.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.2);
+    if (!musicPlaying) { musicPlaying = true; playWesternLoop(Math.min(killCount/30,1)); }
+  }
+  updateMuteBtn();
+}
+
 // ── Init ──
 buildStars();
 goToLanding();
+
+// Start music on first tap of Start
+document.getElementById('startBtn').addEventListener('click', startMusic, {once:true});
+document.getElementById('startBtn').addEventListener('touchstart', startMusic, {once:true, passive:true});
 </script>
 </body>
 </html>
