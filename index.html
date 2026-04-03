@@ -303,6 +303,71 @@ body{font-family:'Press Start 2P',monospace;width:100vw;height:100vh;overflow:hi
 /* Toast */
 @keyframes toastIn{0%{transform:translateX(-50%) translateY(-14px);opacity:0}100%{transform:translateX(-50%) translateY(0);opacity:1}}
 @keyframes cardPop{0%{transform:scale(.2);opacity:0}100%{transform:scale(1);opacity:1}}
+
+/* ══ REVELATION SCREEN ══ */
+.reveal-card{
+  background:#000;border:none;
+  padding:0;text-align:center;
+  width:100vw;height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:0;
+  animation:cardPop .25s steps(4) both;
+}
+.reveal-header{
+  font-family:'Press Start 2P',monospace;
+  font-size:9px;color:#44cc66;letter-spacing:2px;
+  margin-bottom:14px;animation:blink 1s step-end infinite;
+  border:2px solid #44cc66;padding:6px 14px;background:#000;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+.reveal-portrait-wrap{
+  position:relative;
+  width:min(72vw,72vh);height:min(72vw,72vh);
+  margin:0 auto 16px;
+  border:3px solid #44cc66;
+  image-rendering:pixelated;
+  box-shadow:0 0 30px rgba(68,204,102,0.3);
+}
+#reveal-canvas{
+  display:block;width:100%;height:100%;
+  image-rendering:pixelated;
+}
+#reveal-tiles{
+  position:absolute;inset:0;
+  display:grid;
+}
+
+.reveal-tile{
+  background:#000;
+  border:1px solid #002200;
+  transition:opacity 0.7s ease;
+  image-rendering:pixelated;
+}
+.reveal-tile.removed{
+  opacity:0;pointer-events:none;
+}
+
+.reveal-msg{
+  font-family:'Nunito',sans-serif;font-weight:700;
+  font-size:14px;color:#aaffaa;
+  line-height:1.6;text-align:center;
+  padding:0 20px;
+  margin-bottom:14px;
+  max-width:80vw;
+}
+.reveal-msg em{color:#44cc66;font-style:normal;}
+
+.reveal-btn{
+  font-family:'Press Start 2P',monospace;
+  color:#000;background:#44cc66;border:none;outline:none;
+  padding:12px 28px;cursor:pointer;
+  font-size:9px;letter-spacing:1px;
+  box-shadow:0 3px 0 #0d2d0d;
+  transition:transform .08s;
+}
+.reveal-btn:active{transform:translateY(3px);box-shadow:none;}
 </style>
 </head>
 <body>
@@ -372,6 +437,19 @@ body{font-family:'Press Start 2P',monospace;width:100vw;height:100vh;overflow:hi
     <div id="villain-list-wrap"></div>
     <div class="thanks">Thanks for playing, XBLORP! 👾</div>
     <button class="again-btn" id="againBtn">↩ BACK TO BASE</button>
+  </div>
+</div>
+
+<!-- ══ REVELATION SCREEN ══ -->
+<div class="screen hidden" id="scr-reveal">
+  <div class="reveal-card">
+    <div class="reveal-header" id="reveal-header">TRANSMISSION INCOMING</div>
+    <div class="reveal-portrait-wrap">
+      <canvas id="reveal-canvas" width="180" height="180"></canvas>
+      <div id="reveal-tiles"></div>
+    </div>
+    <div class="reveal-msg" id="reveal-msg"></div>
+    <button class="reveal-btn" id="revealBtn">▶ CONTINUE MISSION</button>
   </div>
 </div>
 
@@ -732,6 +810,7 @@ const windContainer = document.getElementById('wind-container');
 const scrLand    = document.getElementById('scr-land');
 const scrGame    = document.getElementById('scr-game');
 const scrEnd     = document.getElementById('scr-end');
+const scrReveal  = document.getElementById('scr-reveal');
 const rStreakEl  = document.getElementById('r-streak');
 
 // ══════════════════════════════════════════════
@@ -741,6 +820,205 @@ function showScreen(n) {
   scrLand.classList.toggle('hidden', n !== 'landing');
   scrGame.classList.toggle('hidden', n !== 'game');
   scrEnd.classList.toggle('hidden',  n !== 'end');
+  scrReveal.classList.toggle('hidden', n !== 'reveal');
+}
+
+// ══════════════════════════════════════════════
+//  REVELATION SYSTEM
+// ══════════════════════════════════════════════
+
+// Trigger kills: 2, 4, 7, 10
+const REVEAL_MILESTONES = [2, 4, 7, 10];
+
+// ── CHILDHOOD ALIEN PORTRAITS ──
+// Each a different life stage pixel art, same 12-wide grid format
+
+// Age 0 — Baby XBLORP: tiny, round, huge eyes, no body
+const BABY_GRID = [
+  [_,_,_,_,_,AP2,AP2,_,_,_,_,_],
+  [_,_,_,AP2,AP,AP,AP,AP,AP2,_,_,_],
+  [_,_,AP,AS,AS,AS,AS,AS,AS,AP,_,_],
+  [_,AP,AS,AE,AE,AS,AS,AE,AE,AS,AP,_],
+  [_,AP,AS,AE,'#111',AE,AE,'#111',AE,AS,AP,_],
+  [_,AP,AS,AE,AE,AS,AS,AE,AE,AS,AP,_],
+  [_,AP,AS2,AS,AT,AS,AS,AT,AS,AS2,AP,_],
+  [_,_,AP,AS,AS,AS,AS,AS,AS,AP,_,_],
+  [_,_,_,AP2,AP,AP2,AP2,AP,AP2,_,_,_],
+  [_,_,AP2,AS,AS2,_,_,AS2,AS,AP2,_,_],
+  [_,_,AP,AP2,_,_,_,_,AP2,AP,_,_],
+  [_,AP2,AP2,AP2,_,_,_,_,AP2,AP2,AP2,_],
+  [_,_,_,_,_,_,_,_,_,_,_,_],
+  [_,_,_,_,_,_,_,_,_,_,_,_],
+  [_,_,_,_,_,_,_,_,_,_,_,_],
+  [_,_,_,_,_,_,_,_,_,_,_,_],
+];
+
+// Age 5 — Toddler XBLORP: small, has tiny arms, big head, holding toy
+const TODDLER_GRID = [
+  [_,_,_,AP2,_,_,_,_,AP2,_,_,_],
+  [_,_,AP,AS,AS,AS,AS,AS,AS,AP,_,_],
+  [_,AP,AS,AE,AE,AS,AS,AE,AE,AS,AP,_],
+  [_,AP,AE,AE,'#111',AE,AE,'#111',AE,AE,AP,_],
+  [_,AP,AS,AE,AE,AS,AS,AE,AE,AS,AP,_],
+  [_,AP,AS,AS,AT,AT,AT,AT,AS,AS,AP,_],
+  [_,_,AP,AP2,AS,AS,AS,AS,AP2,AP,_,_],
+  [_,_,AP,AP,AP2,ABL,ABL,AP2,AP,AP,_,_],
+  ['#ffcc00',AP,AP2,AP,ABL,ABL,ABL,ABL,AP,AP2,AP,'#ffcc00'],
+  [_,AW,AP,AP2,AP,AP,AP,AP,AP2,AP,AW,_],
+  [_,_,AP2,AP,_,_,_,_,AP,AP2,_,_],
+  [_,_,AP2,AP2,_,_,_,_,AP2,AP2,_,_],
+  [_,AP2,AP2,AP2,AP2,_,_,AP2,AP2,AP2,AP2,_],
+  [_,_,_,_,_,_,_,_,_,_,_,_],
+  [_,_,_,_,_,_,_,_,_,_,_,_],
+  [_,_,_,_,_,_,_,_,_,_,_,_],
+];
+
+// Age 12 — Teen XBLORP: awkward, acne warts, slouching, attitude
+const TEEN_GRID = [
+  [_,_,AW,_,_,_,_,_,AW,_,_,_],
+  [_,AP2,AP,AS,AS,AS,AS,AS,AS,AP,AP2,_],
+  [_,AP,AS,AW,AS,AS,AS,AS,AW,AS,AP,_],
+  [AP,AS,AS,'#111','#111',AS,AS,'#111','#111',AS,AS,AP],
+  [AP,AS,AS,'#111','#ff4444',AS,AS,'#ff4444','#111',AS,AS,AP],
+  [AP,AS,AW,AS,AS,AS,AS,AS,AS,AW,AS,AP],
+  [AP,AS,AS,AS,AT,_,_,AT,AS,AS,AS,AP],
+  [_,AP,AS2,AS,AS,AS,AS,AS,AS,AS2,AP,_],
+  [_,AP,AP2,AP,AP,ABL,ABL,AP,AP,AP2,AP,_],
+  [AP2,AP,AP,AP2,AP,AP,AP,AP,AP2,AP,AP,AP2],
+  [AP,AW,AP,AP2,AP,AP,AP,AP,AP2,AP,AW,AP],
+  [_,_,AP,AP,AW,AP,AP,AW,AP,AP,_,_],
+  [_,_,AP2,AP,AP,_,_,AP,AP,AP2,_,_],
+  [_,_,AP2,AP2,_,_,_,_,AP2,AP2,_,_],
+  [_,AP2,AP2,AP2,AP2,_,_,AP2,AP2,AP2,AP2,_],
+  [_,_,_,_,_,_,_,_,_,_,_,_],
+];
+
+// Age 25 — Young adult XBLORP: confused, holding a document, bags under eyes
+const YOUNG_GRID = [
+  [_,_,AP2,_,AP2,_,_,AP2,_,AP2,_,_],
+  [_,AP2,AS,AS,AS,AS,AS,AS,AS,AS,AP2,_],
+  [_,AS,AE,AE,AS,AS,AS,AS,AE,AE,AS,_],
+  [AS,AE,AE,'#111',AE,AS,AS,AE,'#111',AE,AE,AS],
+  [AS,AE,AE,AE,AS,'#663300',AS,AS,AE,AE,AE,AS],
+  [AS,AS,AW,AS,AT,AT,AT,AT,AS,AW,AS,AS],
+  [_,AS2,AS,AS,AS,AS,AS,AS,AS,AS,AS2,_],
+  [_,AP,AP2,AP,AP,ABL,ABL,AP,AP,AP2,AP,_],
+  ['#ffffff',AP,AP,AP2,'#ffffff','#ffffff','#ffffff','#ffffff',AP2,AP,AP,'#ffffff'],
+  ['#dddddd','#ffffff',AP,AP,'#888','#444','#444','#888',AP,AP,'#ffffff','#dddddd'],
+  [_,AP2,AP,AP2,AP,AP,AP,AP,AP2,AP,AP2,_],
+  [_,_,AP2,AP,AW,AP,AP,AW,AP,AP2,_,_],
+  [_,_,AP2,AP,AP,_,_,AP,AP,AP2,_,_],
+  [_,_,AP2,AP2,_,_,_,_,AP2,AP2,_,_],
+  [_,AP2,AP2,AP2,AP2,_,_,AP2,AP2,AP2,AP2,_],
+  [_,_,_,_,_,_,_,_,_,_,_,_],
+];
+
+const REVEAL_PORTRAITS = [BABY_GRID, TODDLER_GRID, TEEN_GRID, YOUNG_GRID];
+const REVEAL_AGES      = ['AGE 0', 'AGE 5', 'AGE 12', 'AGE 25'];
+
+const REVEAL_MESSAGES = [
+  {
+    header: '📡 XBLORP — AGE 0',
+    text: `Born ugly. Born confused. <em>Already disappointed.</em>`,
+    coverFraction: 3/4,
+  },
+  {
+    header: '📡 XBLORP — AGE 5',
+    text: `My toy was a tax form. I loved it. <em>It did not love me back.</em>`,
+    coverFraction: 2/4,
+  },
+  {
+    header: '📡 XBLORP — AGE 12',
+    text: `Awkward, warty, full of feelings. <em>Nobody filed for me either.</em>`,
+    coverFraction: 1/4,
+  },
+  {
+    header: '🌟 LIFE SECRET DISCOVERED',
+    text: `You are not fighting villains. <em>You are fighting the version of yourself that gave up.</em>`,
+    coverFraction: 0,
+    isSecret: true,
+  },
+];
+
+// Draw a specific portrait grid on canvas
+function drawPortraitOnCanvas(canvas, grid) {
+  const ctx = canvas.getContext('2d');
+  const cols = grid[0].length;
+  const rows = grid.length;
+  const scaleX = canvas.width / cols;
+  const scaleY = canvas.height / rows;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#0a0a1a';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  grid.forEach((row, y) => {
+    row.forEach((col, x) => {
+      if (col !== null) {
+        ctx.fillStyle = col;
+        ctx.fillRect(x * scaleX, y * scaleY, scaleX + 0.5, scaleY + 0.5);
+      }
+    });
+  });
+}
+
+// Build puzzle tiles — a 2x2 grid of cover tiles
+function buildRevealTiles(coverFraction) {
+  const tilesEl = document.getElementById('reveal-tiles');
+  tilesEl.innerHTML = '';
+  const COLS = 2, ROWS = 2;
+  tilesEl.style.gridTemplateColumns = `repeat(${COLS}, 1fr)`;
+  tilesEl.style.gridTemplateRows    = `repeat(${ROWS}, 1fr)`;
+  const covered = Math.round(coverFraction * 4);
+  const removalOrder = [3, 2, 1, 0];
+  const removedCount = 4 - covered;
+  const removedIndices = new Set(removalOrder.slice(0, removedCount));
+  for (let i = 0; i < COLS * ROWS; i++) {
+    const tile = document.createElement('div');
+    tile.className = 'reveal-tile' + (removedIndices.has(i) ? ' removed' : '');
+    tilesEl.appendChild(tile);
+  }
+}
+
+function showRevealScreen(revealIndex) {
+  const data = REVEAL_MESSAGES[revealIndex];
+  gameState = 'reveal';
+
+  // Draw the correct childhood portrait
+  const canvas = document.getElementById('reveal-canvas');
+  drawPortraitOnCanvas(canvas, REVEAL_PORTRAITS[revealIndex]);
+
+  buildRevealTiles(data.coverFraction);
+
+  const headerEl = document.getElementById('reveal-header');
+  headerEl.textContent = data.header;
+  if (data.isSecret) {
+    headerEl.style.color = '#ffcc00';
+    headerEl.style.borderColor = '#ffcc00';
+    headerEl.style.animation = 'blink 0.5s step-end infinite';
+  } else {
+    headerEl.style.color = '#44cc66';
+    headerEl.style.borderColor = '#44cc66';
+    headerEl.style.animation = 'blink 1s step-end infinite';
+  }
+
+  document.getElementById('reveal-msg').innerHTML = data.text;
+
+  // Style button differently for secret
+  const btn = document.getElementById('revealBtn');
+  if (data.isSecret) {
+    btn.style.background = '#ffcc00';
+    btn.style.boxShadow = '0 3px 0 #886600';
+  } else {
+    btn.style.background = '#44cc66';
+    btn.style.boxShadow = '0 3px 0 #0d2d0d';
+  }
+
+  showScreen('reveal');
+
+  const tiles = document.querySelectorAll('.reveal-tile:not(.removed)');
+  tiles.forEach((t, i) => {
+    t.style.opacity = '0';
+    setTimeout(() => { t.style.opacity = '1'; }, i * 120);
+  });
 }
 function doFlash() { flashEl.classList.add('go'); setTimeout(()=>flashEl.classList.remove('go'),130); }
 
@@ -935,8 +1213,8 @@ function beginRound() {
   // ── Progressive difficulty with jitter ──
   // Starts at 900ms, hits 300ms by kill ~25, stays brutal after
   // Steep power curve so early game ramps fast
-  const MIN_MS = 300;
-  const MAX_MS = 900;
+  const MIN_MS = 200;
+  const MAX_MS = 600;
   const progress = Math.min(killCount / 30, 1); // hits max difficulty by kill 30
   // Power 1.8 = very steep early ramp
   const easedProgress = Math.pow(progress, 1.8);
@@ -951,7 +1229,7 @@ function beginRound() {
   showScreen('game');
   if(killCount>0){kcEl.style.display='block';kcNum.textContent=killCount;}
   startWind();
-  waitTimer=setTimeout(showExclaim,4000+Math.random()*3000);
+  waitTimer=setTimeout(showExclaim,2000+Math.random()*1500);
 }
 
 function showExclaim() {
@@ -978,6 +1256,16 @@ function playerWins() {
   playWinSound();
   showToast(getQuote());
   setTimeout(confetti,200);
+
+  // Milestone: 2-2-3-3 pattern → kills 2, 4, 7, 10
+  const revealIdx = REVEAL_MILESTONES.indexOf(killCount);
+  if (revealIdx !== -1) {
+    setTimeout(() => {
+      showRevealScreen(revealIdx);
+    }, 700);
+    return;
+  }
+
   runBlock.style.display='block';
   setTimeout(()=>{charL.className='char-wrap attack-l';},80);
   setTimeout(()=>{charL.className='char-wrap run-fwd';},650);
@@ -990,7 +1278,7 @@ function playerWins() {
     gameState='waiting';
     exclaimEl.classList.remove('show'); stopTimer();
     startWind();
-    waitTimer=setTimeout(showExclaim,4000+Math.random()*3000);
+    waitTimer=setTimeout(showExclaim,2000+Math.random()*1500);
   },5000);
 }
 
@@ -1048,6 +1336,22 @@ document.getElementById('startBtn').addEventListener('click',startGame);
 document.getElementById('startBtn').addEventListener('touchstart',e=>{e.preventDefault();startGame();},{passive:false});
 document.getElementById('againBtn').addEventListener('click',goToLanding);
 document.getElementById('againBtn').addEventListener('touchstart',e=>{e.preventDefault();goToLanding();},{passive:false});
+
+function continueFromReveal() {
+  charL.className='char-wrap idle-l';
+  charR.className='char-wrap idle-r';
+  charR.style.transform='scaleX(-1)';
+  gameState='waiting';
+  exclaimEl.classList.remove('show'); stopTimer();
+  startWind();
+  showScreen('game');
+  if(killCount>0){kcEl.style.display='block';kcNum.textContent=killCount;}
+  renderChars(); resetEnemyScale();
+  waitTimer=setTimeout(showExclaim,2000+Math.random()*1500);
+}
+
+document.getElementById('revealBtn').addEventListener('click', continueFromReveal);
+document.getElementById('revealBtn').addEventListener('touchstart', e=>{e.preventDefault();continueFromReveal();},{passive:false});
 document.addEventListener('touchend',e=>{if(e.cancelable)e.preventDefault();},{passive:false});
 
 // ══════════════════════════════════════════════
